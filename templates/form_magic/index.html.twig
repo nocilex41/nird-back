@@ -1,0 +1,1388 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nexus Connecté - Mission 2025{% endblock %}
+
+{% block body %}
+
+    <script>
+        // ====== SYSTÈME DE PORTAIL D'OUVERTURE AMÉLIORÉ ======
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createEnhancedPortal();
+        });
+
+        function createEnhancedPortal() {
+            // Création du conteneur du portail
+            const portalContainer = document.createElement('div');
+            portalContainer.id = 'portalLoader';
+            portalContainer.innerHTML = `
+        <div class="portal-overlay">
+            <!-- Anneaux du portail -->
+            <div class="portal-ring portal-ring-1"></div>
+            <div class="portal-ring portal-ring-2"></div>
+            <div class="portal-ring portal-ring-3"></div>
+            <div class="portal-ring portal-ring-4"></div>
+
+            <!-- Centre énergétique -->
+            <div class="portal-center">
+                <div class="portal-energy"></div>
+                <div class="portal-core">
+                    <div class="portal-symbol">🌌</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="loading-status">Initialisation du Nexus...</div>
+    `;
+
+            document.body.appendChild(portalContainer);
+
+            // Animation du texte de chargement
+            const loadingText = portalContainer.querySelector('.loading-status');
+            const messages = [
+                'Initialisation du Nexus...',
+                'Ouverture du portail...',
+                'Synchronisation quantique...',
+                'Accès accordé...'
+            ];
+
+            let messageIndex = 0;
+            const textInterval = setInterval(() => {
+                messageIndex = (messageIndex + 1) % messages.length;
+                if (loadingText) {
+                    loadingText.textContent = messages[messageIndex];
+                }
+            }, 600);
+
+            // Effet sonore amélioré
+            playPortalSound();
+
+            // Retirer le loader après l'animation
+            setTimeout(() => {
+                clearInterval(textInterval);
+                if (portalContainer) {
+                    // Animation de fermeture
+                    portalContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        portalContainer.remove();
+                        // Afficher le contenu principal
+                        showMainContent();
+                    }, 800);
+                }
+            }, 3000);
+        }
+
+        function playPortalSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioContext.currentTime;
+
+                // Son principal (swoosh cosmique)
+                const oscillator1 = audioContext.createOscillator();
+                const gainNode1 = audioContext.createGain();
+
+                oscillator1.connect(gainNode1);
+                gainNode1.connect(audioContext.destination);
+
+                oscillator1.type = 'sine';
+                oscillator1.frequency.setValueAtTime(150, now);
+                oscillator1.frequency.exponentialRampToValueAtTime(600, now + 1);
+
+                gainNode1.gain.setValueAtTime(0.15, now);
+                gainNode1.gain.exponentialRampToValueAtTime(0.01, now + 1);
+
+                oscillator1.start(now);
+                oscillator1.stop(now + 1);
+
+                // Son d'harmonie (effet cristallin)
+                const oscillator2 = audioContext.createOscillator();
+                const gainNode2 = audioContext.createGain();
+
+                oscillator2.connect(gainNode2);
+                gainNode2.connect(audioContext.destination);
+
+                oscillator2.type = 'triangle';
+                oscillator2.frequency.setValueAtTime(800, now + 0.3);
+                oscillator2.frequency.exponentialRampToValueAtTime(400, now + 1.3);
+
+                gainNode2.gain.setValueAtTime(0.1, now + 0.3);
+                gainNode2.gain.exponentialRampToValueAtTime(0.01, now + 1.3);
+
+                oscillator2.start(now + 0.3);
+                oscillator2.stop(now + 1.3);
+
+            } catch (e) {
+                console.log('Audio Web API non supportée');
+            }
+        }
+
+        function showMainContent() {
+            const formPage = document.querySelector('.form-page') || document.querySelector('main');
+
+            if (formPage) {
+                formPage.style.opacity = '0';
+                formPage.style.transform = 'translateY(30px)';
+                formPage.style.filter = 'blur(10px)';
+
+                setTimeout(() => {
+                    formPage.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                    formPage.style.opacity = '1';
+                    formPage.style.transform = 'translateY(0)';
+                    formPage.style.filter = 'blur(0)';
+                }, 100);
+            }
+        }
+
+    </script>
+
+    <style>
+        /* ====== STYLES DU PORTAIL AMÉLIORÉ ====== */
+
+        #portalLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 99999;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #0a0e1a 0%, #000000 100%);
+            overflow: hidden;
+            animation: portalFadeOut 0.8s ease-in 2.2s forwards;
+        }
+
+        .portal-overlay {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: portalAppear 1s ease-out forwards;
+        }
+
+        /* Anneaux du portail avec effets de lumière */
+        .portal-ring {
+            position: absolute;
+            border-radius: 50%;
+            border-style: solid;
+            box-shadow: 0 0 20px currentColor, inset 0 0 20px currentColor;
+            animation: expandRing 3s infinite ease-in-out;
+        }
+
+        .portal-ring-1 {
+            width: 120px;
+            height: 120px;
+            border-width: 3px;
+            border-color: rgba(192, 132, 252, 0.6);
+            animation-delay: 0s;
+            filter: blur(0.5px);
+        }
+
+        .portal-ring-2 {
+            width: 180px;
+            height: 180px;
+            border-width: 2.5px;
+            border-color: rgba(96, 165, 250, 0.5);
+            animation-delay: 0.3s;
+            filter: blur(0.8px);
+        }
+
+        .portal-ring-3 {
+            width: 240px;
+            height: 240px;
+            border-width: 2px;
+            border-color: rgba(245, 158, 11, 0.4);
+            animation-delay: 0.6s;
+            filter: blur(1px);
+        }
+
+        .portal-ring-4 {
+            width: 300px;
+            height: 300px;
+            border-width: 1.5px;
+            border-color: rgba(16, 185, 129, 0.3);
+            animation-delay: 0.9s;
+            filter: blur(1.5px);
+        }
+
+        /* Centre énergétique du portail */
+        .portal-center {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            animation: centerPulse 2s infinite ease-in-out;
+        }
+
+        .portal-energy {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(
+                circle,
+                rgba(192, 132, 252, 0.8) 0%,
+                rgba(96, 165, 250, 0.5) 30%,
+                rgba(245, 158, 11, 0.3) 60%,
+                transparent 100%
+            );
+            border-radius: 50%;
+            filter: blur(20px);
+            animation: energyPulse 2s infinite alternate ease-in-out;
+        }
+
+        .portal-core {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.3), rgba(96, 165, 250, 0.2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 0 30px rgba(192, 132, 252, 0.6),
+                inset 0 0 20px rgba(96, 165, 250, 0.4);
+            z-index: 2;
+        }
+
+        .portal-symbol {
+            font-size: 2.2rem;
+            color: #ffffff;
+            text-shadow:
+                0 0 10px rgba(192, 132, 252, 1),
+                0 0 20px rgba(96, 165, 250, 0.8);
+            animation: symbolRotate 6s infinite linear;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+        }
+
+
+        /* Texte de chargement */
+        .loading-status {
+            position: fixed;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #e0e7ff;
+            text-align: center;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: textGlow 2s infinite alternate ease-in-out;
+            text-shadow: 0 0 10px rgba(192, 132, 252, 0.5);
+        }
+
+        /* ====== ANIMATIONS ====== */
+
+        @keyframes portalAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(0deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(360deg);
+            }
+        }
+
+        @keyframes portalFadeOut {
+            0% {
+                opacity: 1;
+                visibility: visible;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        @keyframes expandRing {
+            0%, 100% {
+                transform: scale(0.95) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.05) rotate(180deg);
+                opacity: 0.4;
+            }
+        }
+
+        @keyframes energyPulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(1.3);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes centerPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes symbolRotate {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.15);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        @keyframes rotateParticles {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes textGlow {
+            0% {
+                opacity: 0.6;
+                text-shadow: 0 0 10px rgba(192, 132, 252, 0.5);
+            }
+            100% {
+                opacity: 1;
+                text-shadow:
+                    0 0 20px rgba(192, 132, 252, 0.8),
+                    0 0 30px rgba(96, 165, 250, 0.6);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .portal-overlay {
+                width: 300px;
+                height: 300px;
+            }
+
+            .portal-ring-1 { width: 90px; height: 90px; }
+            .portal-ring-2 { width: 135px; height: 135px; }
+            .portal-ring-3 { width: 180px; height: 180px; }
+            .portal-ring-4 { width: 225px; height: 225px; }
+
+            .loading-status {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+        }
+
+
+        /* ====== STYLES DU CORPS PRINCIPAL ====== */
+        body {
+            background-color: #0a0a1a; /* Fond très sombre */
+            color: #e0e0e0;
+
+            line-height: 1.6;
+            background-image: url('https://cdn.pixabay.com/photo/2018/12/29/08/08/background-3901037_1280.jpg');
+
+            background-size: cover;        /* L’image couvre toute la page */
+            background-repeat: no-repeat;  /* Pas de répétition */
+            background-position: center;   /* Centre l’image */
+            background-attachment: fixed;  /* Parallaxe */
+
+            animation: zoomBackground 60s linear infinite alternate;
+        }
+
+
+        @keyframes zoomBackground {
+            from { background-position: 0 0; transform: scale(1); }
+            to { background-position: 10px 10px; transform: scale(1.05); }
+        }
+
+        /* Masquage du contenu principal pendant le chargement du portail */
+        #mainContent.hidden {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+        #mainContent {
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+
+        /* Styles généraux pour les conteneurs */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Styles pour le dialogue Axolotl */
+        .dialog-box {
+            background-color: rgba(17, 24, 39, 0.8); /* Fond sombre avec transparence */
+            backdrop-filter: blur(10px); /* Effet de flou arrière-plan */
+            border: 2px solid rgba(147, 51, 234, 0.3); /* Bordure violette subtile */
+            border-radius: 1rem; /* Coins arrondis */
+            padding: 25px 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Ombre douce */
+            position: relative;
+            margin-bottom: 30px; /* Espace sous la boîte */
+        }
+
+        .dialog-box .title {
+            position: absolute;
+            top: -12px; /* Positionnement au-dessus */
+            left: 30px;
+            background-color: #8b5cf6; /* Violet */
+            color: white;
+            font-size: 0.75rem; /* Taille de police petite */
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 9999px; /* Boutons pilule */
+            border: 2px solid #c4b5fd; /* Bordure violette claire */
+        }
+
+        .dialog-box p {
+            font-size: 1.1rem; /* Taille de police légèrement plus grande */
+            color: #d1d5db; /* Gris clair */
+            margin-bottom: 1rem; /* Espacement entre les paragraphes */
+        }
+
+        .dialog-box p:last-child {
+            margin-bottom: 0; /* Pas de marge pour le dernier paragraphe */
+        }
+
+        .dialog-box .highlight-name {
+            color: #8b5cf6; /* Violet */
+            font-weight: 900; /* Noir */
+            font-size: 1.5rem; /* Taille plus grande */
+        }
+
+        .dialog-box .highlight-keyword {
+            color: #06b6d4; /* Cyan */
+            font-weight: 600; /* Semibold */
+        }
+        .dialog-box .highlight-danger {
+            color: #ef4444; /* Rouge */
+            font-weight: bold;
+            animation: pulse-danger 2s infinite;
+        }
+
+        .dialog-box .highlight-year {
+            color: #fcd34d; /* Jaune */
+            font-weight: 900; /* Noir */
+            font-size: 2rem; /* Taille très grande */
+            animation: pulse-yellow 1s infinite;
+        }
+
+        /* Animations personnalisées */
+        @keyframes pulse-danger {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        @keyframes pulse-yellow {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+        }
+
+        /* Styles pour les cartes de mission */
+        .mission-card {
+            background-color: rgba(26, 32, 44, 0.7); /* Fond sombre semi-transparent */
+            border: 2px solid rgba(147, 51, 234, 0.3); /* Bordure violette subtile */
+            border-radius: 0.75rem; /* Coins arrondis */
+            padding: 24px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            transform-style: preserve-3d; /* Pour les effets 3D */
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: #6d28d9; /* Violet plus prononcé */
+            box-shadow: 0 8px 25px rgba(109, 40, 217, 0.3); /* Ombre violette */
+        }
+
+        .mission-card.selected {
+            border-color: #06b6d4; /* Cyan */
+            box-shadow: 0 0 20px rgba(6, 182, 214, 0.5); /* Ombre cyan */
+            transform: scale(1.03);
+        }
+
+        .mission-icon {
+            font-size: 2.5rem; /* Taille de l'icône */
+            margin-bottom: 0.5rem;
+        }
+
+        .mission-title {
+            font-weight: bold;
+            font-size: 1.25rem; /* Taille de police plus grande */
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .mission-description {
+            font-size: 0.875rem; /* Taille de police plus petite */
+            color: #9ca3af; /* Gris */
+        }
+
+        .mission-arrow {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            color: #06b6d4; /* Cyan */
+        }
+
+        .mission-card:hover .mission-arrow {
+            opacity: 1;
+        }
+
+        /* Styles pour les champs de formulaire */
+        .form-group {
+            margin-bottom: 1.5rem; /* Espacement entre les groupes de champs */
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #d1d5db; /* Gris clair */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem; /* Espacement entre l'icône et le texte */
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="number"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            background-color: rgba(26, 32, 44, 0.7); /* Fond sombre semi-transparent */
+            border: 2px solid rgba(147, 51, 234, 0.3); /* Bordure violette subtile */
+            border-radius: 0.5rem; /* Coins arrondis */
+            padding: 12px 16px;
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #6d28d9; /* Violet */
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3); /* Ombre subtile violette */
+        }
+
+        .form-group textarea {
+            resize: vertical; /* Permet le redimensionnement vertical */
+        }
+
+        .form-group .help-text {
+            font-size: 0.75rem; /* Taille de police petite */
+            color: #9ca3af; /* Gris */
+            margin-top: 0.5rem;
+        }
+
+        /* Styles pour les boutons */
+        .btn {
+            position: relative;
+            display: inline-block;
+            padding: 12px 28px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            overflow: hidden; /* Pour l'effet de lueur */
+            border: none; /* Pas de bordure par défaut */
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #8b5cf6; /* Violet */
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #6d28d9; /* Violet plus foncé */
+            box-shadow: 0 0 20px rgba(109, 40, 217, 0.6);
+        }
+
+        .btn-primary:before { /* Effet de lueur subtil */
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .btn-primary:hover:before {
+            opacity: 1;
+        }
+
+        /* Styles spécifiques pour le bouton de soumission */
+        #submitBtn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 0.75rem;
+            background: linear-gradient(to right, #6366f1, #8b5cf6); /* Gradient bleu-violet */
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        #submitBtn:hover {
+            background: linear-gradient(to right, #4f46e5, #6d28d9); /* Violet plus foncé */
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5);
+        }
+
+        #submitBtn.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Styles pour les badges de mission sélectionnée */
+        .selected-mission-badge {
+            background-color: rgba(147, 51, 234, 0.2); /* Fond violet transparent */
+            border: 1px solid rgba(147, 51, 234, 0.5);
+            color: #ddd;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        /* Styles pour les messages de confirmation */
+        .confirmation-container {
+            background-color: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(79, 70, 229, 0.4); /* Bordure bleu-violet */
+            border-radius: 1.5rem;
+            padding: 40px 50px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
+        }
+
+        .confirmation-title {
+            font-size: 2.5rem;
+            font-weight: black;
+            color: #a5b4fc; /* Bleu clair */
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-message {
+            font-size: 1.2rem;
+            color: #d1d5db; /* Gris clair */
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .confirmation-message strong {
+            color: #6d28d9; /* Violet */
+        }
+
+        .confirmation-objective {
+            font-size: 1.1rem;
+            color: #9ca3af; /* Gris */
+            margin-bottom: 2rem;
+            padding: 15px;
+            background-color: rgba(26, 32, 44, 0.5);
+            border-radius: 0.75rem;
+        }
+
+        .xp-gained {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fcd34d; /* Jaune */
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Styles pour le bouton de partage */
+        .share-button {
+            background-color: #1d4ed8; /* Bleu */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .share-button:hover {
+            background-color: #1e3a8a; /* Bleu plus foncé */
+        }
+
+        /* Styles pour le bouton de réinitialisation */
+        .reset-button {
+            background-color: #4b5563; /* Gris */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .reset-button:hover {
+            background-color: #374151; /* Gris plus foncé */
+        }
+
+        /* Styles pour le badge d'objectif annuel */
+        #yearlyObjectiveContainer {
+            background-color: rgba(253, 224, 71, 0.1); /* Fond jaune transparent */
+            border: 1px solid rgba(253, 224, 71, 0.3);
+            color: #fef08a; /* Texte jaune clair */
+            padding: 15px 20px;
+            border-radius: 0.75rem;
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(253, 224, 71, 0.15);
+        }
+
+        /* Amélioration de l'accessibilité */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Animations personnalisées */
+        @keyframes progress-bar {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        .animate-progress-bar {
+            animation: progress-bar 2s ease-out forwards;
+        }
+
+        @keyframes glitch-1 {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-3px); }
+            40% { transform: translateX(3px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+        }
+
+        @keyframes glitch-2 {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(3px); }
+            40% { transform: translateX(-3px); }
+            60% { transform: translateX(3px); }
+            80% { transform: translateX(-3px); }
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 3s ease-in-out infinite;
+        }
+
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .animate-bounce-slow {
+            animation: bounce-slow 2s ease-in-out infinite;
+        }
+
+        @keyframes ping-slow {
+            0% { transform: scale(1); opacity: 1; }
+            75%, 100% { transform: scale(2); opacity: 0; }
+        }
+
+        .animate-ping-slow {
+            animation: ping-slow 2s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(0); }
+        }
+
+        .animate-progress {
+            animation: progress 2s ease-out;
+        }
+
+        @keyframes progress-slow {
+            0% { width: 0%; }
+            100% { width: 42%; }
+        }
+
+        .animate-progress-slow {
+            animation: progress-slow 2s ease-out;
+        }
+
+        /* Effet hover sur les mission cards */
+        .mission-card {
+            transform-style: preserve-3d;
+        }
+
+        /* Focus visible pour l'accessibilité */
+        *:focus-visible {
+            outline: 3px solid rgb(34, 211, 238);
+            outline-offset: 2px;
+            border-radius: 0.5rem;
+        }
+
+        /* Amélioration des contrastes */
+        ::placeholder {
+            color: rgb(107, 114, 128) !important;
+            opacity: 1;
+        }
+
+        /* Mode sombre forcé pour meilleur contraste */
+        input, textarea, select {
+            color-scheme: dark;
+        }
+    </style>
+
+    <div id="mainContent" class="container">
+
+        <!-- En-tête -->
+        <header class="text-center my-16">
+            <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-purple-500 mb-4">
+                Nexus Connecté
+            </h1>
+            <p class="text-xl text-gray-300">Mission Annuelle 2025</p>
+        </header>
+
+        <!-- Dialogue Axolotl avec effet machine à écrire -->
+        <div class="dialog-box">
+            <div class="title">💬 TRANSMISSION</div>
+            <p><span class="highlight-name">Salutations, voyageur des flux de données !</span> 🚀</p>
+            <p>Je suis <span class="highlight-name">Axolotl</span>, gardien du <span class="highlight-keyword">Nexus</span>.</p>
+            <p>Les <span class="highlight-danger">Bugs Ancestraux</span> menacent notre monde numérique !</p>
+            <p>Choisis ta mission et forge ton destin en cette année <span class="highlight-year">2025</span> ! ⚔️</p>
+        </div>
+
+        <!-- Sélection de Mission -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-cyan-400 mb-8">Choisis ta mission</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <button type="button" onclick="selectMission('contact')"
+                        class="mission-card group relative"
+                        aria-label="Sélectionner la mission Établir le Contact">
+                    <div class="mission-icon">📞</div>
+                    <div class="mission-title">Établir le Contact</div>
+                    <div class="mission-description">Envoie un message aux Agents</div>
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity mission-arrow">→</div>
+                </button>
+                <button type="button" onclick="selectMission('don')"
+                        class="mission-card group relative"
+                        aria-label="Sélectionner la mission Offrir un Don">
+                    <div class="mission-icon">💰</div>
+                    <div class="mission-title">Offrir un Don</div>
+                    <div class="mission-description">Soutiens le Nexus</div>
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity mission-arrow">→</div>
+                </button>
+                <button type="button" onclick="selectMission('benevole')"
+                        class="mission-card group relative"
+                        aria-label="Sélectionner la mission Rejoindre la Guilde">
+                    <div class="mission-icon">🛡️</div>
+                    <div class="mission-title">Rejoindre la Guilde</div>
+                    <div class="mission-description">Deviens un Chevalier</div>
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity mission-arrow">→</div>
+                </button>
+                <button type="button" onclick="selectMission('info')"
+                        class="mission-card group relative"
+                        aria-label="Sélectionner la mission Demander des Informations">
+                    <div class="mission-icon">❓</div>
+                    <div class="mission-title">Demander des Infos</div>
+                    <div class="mission-description">En savoir plus</div>
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity mission-arrow">→</div>
+                </button>
+            </div>
+            <div id="missionError" class="text-red-400 text-center mt-4 font-semibold hidden">Veuillez sélectionner une mission avant de continuer.</div>
+            <div id="selectedMissionBadge" class="hidden text-center mt-4">
+                <span class="selected-mission-badge">
+                    <span id="missionIcon"></span> <span id="missionName"></span>
+                </span>
+            </div>
+        </section>
+
+        <!-- Formulaire de Mission -->
+        <section id="formPage" class="dialog-box">
+            <h2 class="text-3xl font-bold text-center text-cyan-400 mb-8">Détails de ta Mission</h2>
+            <form id="nexusForm">
+                <input type="hidden" id="missionType" name="missionType">
+
+                <!-- Champs dynamiques -->
+                <div id="dynamicFields"></div>
+
+                <!-- Champs communs -->
+                <div class="form-group">
+                    <label for="userName">Nom de l'Agent</label>
+                    <input type="text" id="userName" name="userName" required aria-required="true" placeholder="Ton nom de code">
+                </div>
+
+                <div class="form-group">
+                    <label for="userEmail">Canal de Communication</label>
+                    <input type="email" id="userEmail" name="userEmail" required aria-required="true" placeholder="Ton adresse email">
+                    <p id="userEmail-help" class="help-text">Canal crypté de communication.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="motivation">Ta Motivation</label>
+                    <textarea id="motivation" name="motivation" rows="4" required aria-required="true" placeholder="Pourquoi rejoins-tu le Nexus ?"></textarea>
+                    <p id="motivation-help" class="help-text">Partage ta quête personnelle.</p>
+                </div>
+
+                <!-- Section de vérification humaine -->
+                <div class="form-group mt-8">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" required aria-required="true" id="humanVerification" name="humanVerification" class="w-6 h-6 rounded border-purple-500 text-cyan-400 focus:ring-cyan-400 bg-slate-800/50">
+                        <label class="text-lg text-gray-300 cursor-pointer" for="humanVerification">
+                            Je certifie être un agent humain authentique.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Bouton de Soumission -->
+                <div class="text-center mt-12">
+                    <button type="submit" id="submitBtn" class="btn btn-primary">
+                        <span class="flex items-center justify-center gap-3">
+                            <span class="text-2xl">⚔️</span>
+                            <span>ACCOMPLIR MA MISSION</span>
+                            <span class="text-2xl">⚔️</span>
+                        </span>
+                    </button>
+                    <div id="submitProgress" class="mt-4 mx-auto h-3 w-48 bg-gray-700 rounded-full hidden">
+                        <div class="h-full bg-cyan-400 rounded-full animate-progress-bar"></div>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- Page de Confirmation -->
+        <section id="confirmationPage" class="hidden">
+            <div class="confirmation-container">
+                <h2 id="confirmTitle" class="confirmation-title">Mission Accomplie !</h2>
+                <p id="confirmMessage" class="confirmation-message">
+                    Merci pour ta contribution au Nexus Connecté. Ton action est précieuse.
+                </p>
+                <div id="yearlyObjectiveContainer" class="relative mb-8">
+                    <h3 class="text-3xl font-black text-yellow-300 mb-4">OBJECTIF 2025</h3>
+                    <p class="text-xl text-gray-200 text-center leading-relaxed" id="yearlyObjective"></p>
+                </div>
+                <div class="xp-gained">
+                    <span class="text-3xl">✨</span>
+                    <span id="xpGained"></span> Points d'Expérience acquis !
+                    <span class="text-3xl">✨</span>
+                </div>
+                <div class="mt-8 flex justify-center gap-4">
+                    <button onclick="shareSuccess()" class="btn share-button">Partager mon Succès</button>
+                    <button onclick="resetForm()" class="btn reset-button">Accomplir une autre Mission</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Animation de confettis (sera déclenchée lors de la confirmation) -->
+        <div id="confetti-container"></div>
+
+    </div>
+
+    <script>
+        const missionType = document.getElementById('missionType');
+        const dynamicFields = document.getElementById('dynamicFields');
+        const nexusForm = document.getElementById('nexusForm');
+        const formPage = document.getElementById('formPage');
+        const confirmationPage = document.getElementById('confirmationPage');
+        const selectedMissionBadge = document.getElementById('selectedMissionBadge');
+        const missionError = document.getElementById('missionError');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitProgress = document.getElementById('submitProgress');
+
+        // Données des missions
+        const missionsData = {
+            contact: { icon: '📞', name: 'Établir le Contact', color: 'blue' },
+            don: { icon: '💰', name: 'Offrir un Don', color: 'yellow' },
+            benevole: { icon: '🛡️', name: 'Rejoindre la Guilde', color: 'green' },
+            info: { icon: '❓', name: 'Demander des Informations', color: 'purple' }
+        };
+
+        // Configuration des messages de confirmation pour chaque mission
+        const confirmationMessages = {
+            contact: {
+                title: "Transmission Réussie !",
+                message: (name, data) => `
+                    <p>Agent <strong class="text-cyan-400">${name}</strong>, ton message a été acheminé avec succès.</p>
+                    <p>Tu as contribué à renforcer les liens entre les secteurs du Nexus.</p>
+                `,
+                objective: "Notre objectif 2025 est d'élargir notre réseau de communication à 100% pour une meilleure coordination contre les menaces.",
+                xp: 150
+            },
+            don: {
+                title: "Don Reçu et Apprécié !",
+                message: (name, data) => `
+                    <p>Merci, <strong class="text-cyan-400">${name}</strong>, pour ton généreux soutien.</p>
+                    <p>Ton don de <strong class="text-yellow-400">${data.amount}€</strong> sera utilisé pour équiper nos agents les plus méritants.</p>
+                `,
+                objective: "Objectif 2025 : Lever 50 000€ pour financer les opérations critiques du Nexus. Ton don nous rapproche de ce but.",
+                xp: 300
+            },
+            benevole: {
+                title: "Bienvenue dans la Guilde, Chevalier !",
+                message: (name, data) => `
+                    <p>Félicitations, <strong class="text-cyan-400">Chevalier ${name}</strong> ! ⚔️</p>
+                    <p>Ton engagement a été enregistré avec honneur par le Conseil.</p>
+                    <p>Un Maître de Guilde te contactera sous 72 heures pour ton intégration.</p>
+                `,
+                objective: "En 2025, notre objectif est de recruter 100 nouveaux membres pour renforcer nos équipes. Tu fais partie de cette expansion !",
+                xp: 200
+            },
+            info: {
+                title: "Information Transmise !",
+                message: (name, data) => `
+                    <p>Agent <strong class="text-cyan-400">${name}</strong>, ta demande d'information a été traitée.</p>
+                    <p>Tu recevras bientôt des détails sur nos opérations et projets.</p>
+                `,
+                objective: "Objectif 2025 : Assurer une transparence totale sur nos activités et nos avancées technologiques auprès de tous les membres actifs.",
+                xp: 100
+            }
+        };
+
+
+        // Fonction pour afficher le loader initial
+        document.addEventListener('DOMContentLoaded', () => {
+            // Le loader est déjà créé dans le bloc Twig, pas besoin de le recréer ici
+            // Assurez-vous que le loader a un ID ou une classe pour être sélectionné et retiré
+            setTimeout(() => {
+                const portalLoader = document.getElementById('portalLoader');
+                if (portalLoader) {
+                    portalLoader.style.display = 'none'; // Cache le loader
+                }
+                formPage.style.opacity = '0';
+                formPage.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    formPage.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+                    formPage.style.opacity = '1';
+                    formPage.style.transform = 'translateY(0)';
+                }, 100);
+            }, 1500); // Délai pour simuler le chargement du Nexus
+        });
+
+
+        // Fonction de sélection de mission
+        window.selectMission = function(mission) {
+            missionType.value = mission;
+            missionError.classList.add('hidden');
+
+            // Mise à jour du badge
+            const missionData = missionsData[mission];
+            document.getElementById('missionIcon').textContent = missionData.icon;
+            document.getElementById('missionName').textContent = missionData.name;
+            selectedMissionBadge.classList.remove('hidden');
+
+            // Retirer la sélection visuelle des autres cards
+            document.querySelectorAll('.mission-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Ajouter la sélection visuelle à la carte cliquée
+            event.currentTarget.classList.add('selected');
+
+            // Afficher les champs dynamiques selon la mission
+            dynamicFields.innerHTML = getMissionFields(mission);
+            dynamicFields.classList.remove('hidden');
+
+            // Annonce pour l'accessibilité
+            announceToScreenReader(`Mission sélectionnée : ${missionData.name}`);
+        }
+
+        // Générer les champs spécifiques à chaque mission
+        function getMissionFields(mission) {
+            switch (mission) {
+                case 'don':
+                    return `
+                        <div class="form-group">
+                            <label>Montant du Don</label>
+                            <div class="grid grid-cols-3 gap-3 mb-3">
+                                <button type="button" onclick="setAmount(10)" class="amount-btn bg-gradient-to-br from-yellow-900/50 to-yellow-700/30 border-2 border-yellow-500/50 rounded-xl py-3 px-4 hover:border-yellow-400 hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] transition-all font-bold text-white">10€</button>
+                                <button type="button" onclick="setAmount(25)" class="amount-btn bg-gradient-to-br from-yellow-900/50 to-yellow-700/30 border-2 border-yellow-500/50 rounded-xl py-3 px-4 hover:border-yellow-400 hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] transition-all font-bold text-white">25€</button>
+                                <button type="button" onclick="setAmount(50)" class="amount-btn bg-gradient-to-br from-yellow-900/50 to-yellow-700/30 border-2 border-yellow-500/50 rounded-xl py-3 px-4 hover:border-yellow-400 hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] transition-all font-bold text-white">50€</button>
+                            </div>
+                            <div class="relative">
+                                <input type="number" id="donAmount" name="donAmount" min="1" required aria-required="true" aria-describedby="donAmount-help" class="w-full" placeholder="Montant personnalisé">
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 text-yellow-400 text-xl font-bold">€</div>
+                            </div>
+                            <p id="donAmount-help" class="help-text">Choisis un montant pour soutenir le Nexus.</p>
+                        </div>
+                    `;
+                case 'benevole':
+                    return `
+                        <div class="form-group">
+                            <label>Compétences Clés</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center gap-2 bg-slate-800/50 border-2 border-purple-500/50 rounded-lg p-3 cursor-pointer hover:border-green-400 transition-all">
+                                    <input type="checkbox" name="competences[]" value="communication" class="w-5 h-5 rounded border-purple-500 text-green-500 focus:ring-green-400">
+                                    <span class="text-white text-sm">📣 Communication</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-slate-800/50 border-2 border-purple-500/50 rounded-lg p-3 cursor-pointer hover:border-green-400 transition-all">
+                                    <input type="checkbox" name="competences[]" value="event" class="w-5 h-5 rounded border-purple-500 text-green-500 focus:ring-green-400">
+                                    <span class="text-white text-sm">🎪 Événementiel</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-slate-800/50 border-2 border-purple-500/50 rounded-lg p-3 cursor-pointer hover:border-green-400 transition-all">
+                                    <input type="checkbox" name="competences[]" value="admin" class="w-5 h-5 rounded border-purple-500 text-green-500 focus:ring-green-400">
+                                    <span class="text-white text-sm">📋 Administratif</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-slate-800/50 border-2 border-purple-500/50 rounded-lg p-3 cursor-pointer hover:border-green-400 transition-all">
+                                    <input type="checkbox" name="competences[]" value="tech" class="w-5 h-5 rounded border-purple-500 text-green-500 focus:ring-green-400">
+                                    <span class="text-white text-sm">💻 Technique</span>
+                                </label>
+                                 <label class="flex items-center gap-2 bg-slate-800/50 border-2 border-purple-500/50 rounded-lg p-3 cursor-pointer hover:border-green-400 transition-all">
+                                    <input type="checkbox" name="competences[]" value="design" class="w-5 h-5 rounded border-purple-500 text-green-500 focus:ring-green-400">
+                                    <span class="text-white text-sm">🎨 Design</span>
+                                </label>
+                                 <label class="flex items-center gap-2 bg-slate-800/50 border-2 border-purple-500/50 rounded-lg p-3 cursor-pointer hover:border-green-400 transition-all">
+                                    <input type="checkbox" name="competences[]" value="security" class="w-5 h-5 rounded border-purple-500 text-green-500 focus:ring-green-400">
+                                    <span class="text-white text-sm">🔒 Sécurité</span>
+                                </label>
+                            </div>
+                            <p class="help-text mt-2">Sélectionne tes domaines d'expertise.</p>
+                        </div>
+                    `;
+                // Pour les autres missions, on n'ajoute pas de champs spécifiques ici
+                default:
+                    return '';
+            }
+        }
+
+        // Définir le montant du don
+        window.setAmount = function(amount) {
+            document.getElementById('donAmount').value = amount;
+            // Mise à jour visuelle des boutons de montant
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('bg-yellow-400', 'shadow-lg');
+                btn.classList.add('bg-gradient-to-br', 'from-yellow-900/50', 'to-yellow-700/30', 'border-yellow-500/50');
+            });
+            event.currentTarget.classList.remove('bg-gradient-to-br', 'from-yellow-900/50', 'to-yellow-700/30', 'border-yellow-500/50');
+            event.currentTarget.classList.add('bg-yellow-400', 'shadow-lg');
+        };
+
+        // Gestion de la soumission du formulaire
+        nexusForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const mission = missionType.value;
+            const userName = document.getElementById('userName').value;
+            const userEmail = document.getElementById('userEmail').value;
+            const motivation = document.getElementById('motivation').value;
+            const humanVerification = document.getElementById('humanVerification').checked;
+
+            // Validation simple
+            if (!mission) {
+                missionError.classList.remove('hidden');
+                return;
+            }
+            if (!userName || !userEmail || !motivation) {
+                alert('Veuillez remplir tous les champs requis.');
+                return;
+            }
+            if (!humanVerification) {
+                alert('Veuillez cocher la case de vérification humaine.');
+                return;
+            }
+
+            // Désactiver le bouton et afficher le progrès
+            submitBtn.disabled = true;
+            submitBtn.classList.add('disabled');
+            submitBtn.innerHTML = '<span class="flex items-center justify-center gap-3"><span class="animate-spin text-2xl">⚙️</span><span>TRANSMISSION EN COURS...</span></span>';
+            submitProgress.classList.remove('hidden');
+
+            // Récupération des données spécifiques
+            let additionalData = {};
+            if (mission === 'don') {
+                additionalData.amount = document.getElementById('donAmount').value || '0';
+            } else if (mission === 'benevole') {
+                const competences = Array.from(nexusForm.querySelectorAll('input[name="competences[]"]:checked')).map(cb => cb.value);
+                additionalData.competences = competences;
+            }
+
+            // Simulation d'envoi sécurisé (HTTPS)
+            console.log('🔐 Données envoyées via canal crypté...');
+            console.log('Mission:', mission);
+            console.log('Utilisateur:', userName);
+            console.log('Email:', userEmail);
+            console.log('Motivation:', motivation);
+            console.log('Données additionnelles:', additionalData);
+
+            // Délai de simulation
+            setTimeout(() => {
+                // Affichage de la page de confirmation
+                showConfirmation(mission, userName, additionalData);
+
+                // Reset du bouton et de la barre de progrès
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('disabled');
+                submitBtn.innerHTML = '<span class="flex items-center justify-center gap-3"><span class="text-2xl">⚔️</span><span>ACCOMPLIR MA MISSION</span><span class="text-2xl">⚔️</span></span>';
+                submitProgress.classList.add('hidden');
+            }, 2000);
+        });
+
+        // Fonction d'affichage de la confirmation
+        function showConfirmation(mission, userName, data = {}) {
+            const config = confirmationMessages[mission];
+
+            // Vérification que les éléments existent avant de modifier leur contenu
+            const confirmTitleElement = document.getElementById('confirmTitle');
+            const confirmMessageElement = document.getElementById('confirmMessage');
+            const yearlyObjectiveElement = document.getElementById('yearlyObjective');
+            const xpGainedElement = document.getElementById('xpGained');
+
+            if (confirmTitleElement) {
+                confirmTitleElement.innerHTML = config.title;
+            } else {
+                console.error("Element with ID 'confirmTitle' not found.");
+            }
+
+            if (confirmMessageElement) {
+                confirmMessageElement.innerHTML = config.message(userName, data);
+            } else {
+                console.error("Element with ID 'confirmMessage' not found.");
+            }
+
+            if (yearlyObjectiveElement) {
+                yearlyObjectiveElement.innerHTML = config.objective;
+            } else {
+                console.error("Element with ID 'yearlyObjective' not found.");
+            }
+
+            if (xpGainedElement) {
+                xpGainedElement.textContent = config.xp;
+            } else {
+                console.error("Element with ID 'xpGained' not found.");
+            }
+
+            formPage.classList.add('hidden');
+            confirmationPage.classList.remove('hidden');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Animation des confettis
+            createConfetti();
+        }
+
+        // Fonction de reset
+        window.resetForm = function() {
+            nexusForm.reset();
+            dynamicFields.innerHTML = '';
+            dynamicFields.classList.add('hidden');
+            clearMission();
+            formPage.classList.remove('hidden');
+            confirmationPage.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // Nettoyer la sélection de mission
+        function clearMission() {
+            missionType.value = '';
+            selectedMissionBadge.classList.add('hidden');
+            document.querySelectorAll('.mission-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+        }
+
+        // Fonction de partage
+        window.shareSuccess = function() {
+            const text = "Je viens d'accomplir ma mission sur le Nexus Connecté ! 🚀 Rejoins-moi dans le combat contre les Bugs Ancestraux ! #Nexus2025 #NuitDeLInfo #ChevalierDuCode";
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Mission Accomplie - Nexus 2025',
+                    text: text,
+                    url: window.location.href
+                }).catch((error) => {
+                    console.log('Erreur lors du partage via Web Share API:', error);
+                    copyToClipboard(text);
+                });
+            } else {
+                copyToClipboard(text);
+            }
+        };
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Lien copié ! Partage-le sur tes réseaux sociaux !');
+            }).catch(err => {
+                console.error('Erreur lors de la copie dans le presse-papiers:', err);
+                prompt('Copie manuelle du lien:', text);
+            });
+        }
+
+        // Animation de confettis
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti-container');
+            if (!confettiContainer) return;
+
+            const colors = ['#22d3ee', '#a855f7', '#ec4899', '#fbbf24', '#10b981'];
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    confetti.style.opacity = '1';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.borderRadius = '50%';
+                    confettiContainer.appendChild(confetti);
+
+                    const animation = confetti.animate([
+                        { transform: `translateY(0) rotate(${Math.random() * 360}deg)`, opacity: 1 },
+                        { transform: `translateY(${window.innerHeight + 20}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                    ], {
+                        duration: 3000 + Math.random() * 2000,
+                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    });
+
+                    animation.onfinish = () => confetti.remove();
+                }, i * 30);
+            }
+        }
+
+        // Amélioration de l'accessibilité : Annonce vocale pour les lecteurs d'écran
+        function announceToScreenReader(message) {
+            const announcer = document.getElementById('sr-announcer');
+            if (announcer) {
+                announcer.textContent = message;
+            }
+        }
+    </script>
+
+{% endblock %}
