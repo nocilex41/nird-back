@@ -1,0 +1,33 @@
+# Normalisation des fins de ligne et encodage
+* text=auto eol=lf
+
+# Fichiers texte explicites avec UTF-8
+*.php text eol=lf working-tree-encoding=UTF-8
+*.html text eol=lf working-tree-encoding=UTF-8
+*.htm text eol=lf working-tree-encoding=UTF-8
+*.css text eol=lf working-tree-encoding=UTF-8
+*.js text eol=lf working-tree-encoding=UTF-8
+*.json text eol=lf working-tree-encoding=UTF-8
+*.xml text eol=lf working-tree-encoding=UTF-8
+*.txt text eol=lf working-tree-encoding=UTF-8
+*.md text eol=lf working-tree-encoding=UTF-8
+
+# Fichiers de configuration
+*.ini text eol=lf working-tree-encoding=UTF-8
+*.env text eol=lf working-tree-encoding=UTF-8
+*.htaccess text eol=lf working-tree-encoding=UTF-8
+
+# Scripts shell
+*.sh text eol=lf
+*.ps1 text eol=crlf
+
+# Fichiers binaires
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.webp binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary 
