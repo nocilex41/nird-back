@@ -1,0 +1,614 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Linux Academy{% endblock %}
+
+{% block body %}
+
+    <!-- =============================
+         HERO : Bannière d'accueil animée
+         ============================= -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-icon">🐧</div>
+            <h1 class="hero-title">Bienvenue sur <span class="gradient-text">Linux Academy</span></h1>
+            <p class="hero-subtitle">
+                Apprends Linux simplement, sans prise de tête.<br>
+                Même si tu débutes complètement, promis, on va y aller doucement 😊
+            </p>
+            <div class="hero-badge">
+                <span>✨ 100% Gratuit</span>
+                <span>🚀 Pour tous niveaux</span>
+                <span>💚 Open Source</span>
+            </div>
+        </div>
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </section>
+
+    <!-- =============================
+         SECTION : Pourquoi Linux ?
+         ============================= -->
+    <section class="card card-highlight">
+        <div class="card-icon">🌿</div>
+        <h3>Linux, c'est quoi au juste ?</h3>
+        <p class="card-intro">
+            Imagine un système d'exploitation gratuit, sécurisé, et qui fonctionne même sur ton vieux PC qui rame.
+            C'est ça, Linux ! Et en plus, c'est utilisé partout : serveurs, smartphones, fusées… 🚀
+        </p>
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">💸</div>
+                <h4>100% Gratuit</h4>
+                <p>Aucun abonnement, aucune licence</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔐</div>
+                <h4>Ultra sécurisé</h4>
+                <p>Fini les virus et ransomwares</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h4>Hyper rapide</h4>
+                <p>Redonne vie à ton ancien ordi</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎨</div>
+                <h4>Personnalisable</h4>
+                <p>Modifie tout comme tu veux</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+         SECTION : Guide du terminal
+         ============================= -->
+    <section class="card card-interactive">
+        <div class="card-icon">💡</div>
+        <h3>Comment utiliser le terminal ci‑dessous ?</h3>
+        <p class="card-intro">
+            Pas de panique ! Ce n'est pas un vrai terminal compliqué.<br>
+            C'est juste un petit assistant pour t'aider à découvrir Linux pas à pas.
+        </p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Clique dans la zone de texte</h4>
+                    <p>Tout en bas, où c'est écrit "Tape une commande…"</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Écris une commande</h4>
+                    <p>Par exemple : <code class="inline-code">help</code></p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Appuie sur Entrée</h4>
+                    <p>Et regarde la magie opérer ✨</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="commands-showcase">
+            <h4>🎯 Commandes disponibles :</h4>
+            <div class="commands-grid">
+                <div class="command-item" data-cmd="pourquoi">
+                    <code>pourquoi</code>
+                    <span>→ Pourquoi choisir Linux</span>
+                </div>
+                <div class="command-item" data-cmd="installer">
+                    <code>installer</code>
+                    <span>→ Comment l'installer</span>
+                </div>
+                <div class="command-item" data-cmd="usb">
+                    <code>usb</code>
+                    <span>→ Créer une clé bootable</span>
+                </div>
+                <div class="command-item" data-cmd="bios">
+                    <code>bios</code>
+                    <span>→ Démarrer sur la clé</span>
+                </div>
+                <div class="command-item" data-cmd="logiciels">
+                    <code>logiciels</code>
+                    <span>→ Apps indispensables</span>
+                </div>
+                <div class="command-item" data-cmd="astuces">
+                    <code>astuces</code>
+                    <span>→ Tips pour débutants</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+         SECTION : Astuces
+         ============================= -->
+    <section class="card card-tips">
+        <div class="card-icon">✨</div>
+        <h3>Conseils d'or pour bien débuter</h3>
+        <div class="tips-grid">
+            <div class="tip">
+                <div class="tip-emoji">🧘</div>
+                <p>Prends ton temps, tu ne peux <strong>presque rien casser</strong></p>
+            </div>
+            <div class="tip">
+                <div class="tip-emoji">🔄</div>
+                <p>Teste Linux <strong>sans l'installer</strong> d'abord (mode Live)</p>
+            </div>
+            <div class="tip">
+                <div class="tip-emoji">🔔</div>
+                <p>Fais les <strong>mises à jour</strong> quand on te le propose</p>
+            </div>
+            <div class="tip">
+                <div class="tip-emoji">🛍️</div>
+                <p>Utilise la <strong>boutique d'applications</strong>, c'est plus simple</p>
+            </div>
+            <div class="tip">
+                <div class="tip-emoji">🎉</div>
+                <p>Amuse-toi et <strong>explore sans limite</strong> !</p>
+            </div>
+            <div class="tip">
+                <div class="tip-emoji">🌐</div>
+                <p>La communauté est <strong>toujours là</strong> pour t'aider</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+         TON TERMINAL (inchangé)
+         ============================= -->
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <span class="led red"></span><span class="led yellow"></span><span class="led green"></span>
+            <span class="title">Linux Academy – Terminal simplifié</span>
+        </div>
+
+        <div class="terminal-body" id="terminal">
+            <p><span class="prompt">$</span> Bienvenue ! Ici, tu vas apprendre Linux très simplement.</p>
+            <p><span class="prompt">$</span> Tape <span class="cmd">help</span> pour voir les explications disponibles.</p>
+        </div>
+
+        <input id="terminal-input" class="terminal-input" placeholder="Tape une commande…" autofocus>
+    </div>
+
+    <!-- =============================
+         STYLE GLOBAL
+         ============================= -->
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            text-align: center;
+            padding: 80px 20px;
+            overflow: hidden;
+        }
+        .hero-content { position: relative; z-index: 2; }
+        .hero-icon {
+            font-size: 80px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .hero-title {
+            font-size: 3rem;
+            margin: 20px 0;
+            font-weight: 800;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #06b6d4, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease infinite;
+        }
+        @keyframes gradient-shift {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(30deg); }
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .hero-badge {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .hero-badge span {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Formes flottantes */
+        .floating-shapes { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139,92,246,0.3), transparent);
+            animation: float 6s ease-in-out infinite;
+        }
+        .shape-1 { width: 300px; height: 300px; top: -100px; left: -100px; animation-delay: 0s; }
+        .shape-2 { width: 400px; height: 400px; bottom: -150px; right: -150px; animation-delay: 2s; }
+        .shape-3 { width: 200px; height: 200px; top: 50%; left: 50%; animation-delay: 4s; }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        /* ===== CARDS ===== */
+        section.card {
+            width: 85%;
+            max-width: 1100px;
+            margin: 40px auto;
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        section.card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(139,92,246,0.3);
+        }
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .card h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #8be9fd;
+        }
+        .card-intro {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        /* ===== FEATURES GRID ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .feature {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .feature:hover {
+            background: rgba(139,92,246,0.1);
+            border-color: #8b5cf6;
+            transform: scale(1.05);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .feature h4 {
+            color: #a78bfa;
+            margin-bottom: 8px;
+        }
+        .feature p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* ===== STEPS ===== */
+        .steps {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .step {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            gap: 15px;
+            background: rgba(6,182,212,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #06b6d4;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #06b6d4;
+            color: #0f172a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .step-content h4 {
+            color: #67e8f9;
+            margin-bottom: 5px;
+        }
+        .step-content p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== COMMANDS SHOWCASE ===== */
+        .commands-showcase {
+            background: rgba(15,23,42,0.6);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        .commands-showcase h4 {
+            color: #fbbf24;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+        .command-item {
+            background: rgba(255,255,255,0.05);
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .command-item:hover {
+            background: rgba(251,191,36,0.1);
+            border-color: #fbbf24;
+            transform: translateX(5px);
+        }
+        .command-item code {
+            background: #1e293b;
+            padding: 4px 10px;
+            border-radius: 6px;
+            color: #fbbf24;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .command-item span {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+        .inline-code {
+            background: #1e293b;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #fbbf24;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ===== TIPS GRID ===== */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        .tip {
+            background: linear-gradient(135deg, rgba(236,72,153,0.1), rgba(139,92,246,0.1));
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(236,72,153,0.3);
+            transition: all 0.3s ease;
+        }
+        .tip:hover {
+            transform: scale(1.03);
+            border-color: #ec4899;
+            box-shadow: 0 5px 20px rgba(236,72,153,0.3);
+        }
+        .tip-emoji {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        .tip p {
+            color: #e2e8f0;
+            font-size: 1rem;
+        }
+        .tip strong {
+            color: #fbbf24;
+        }
+
+        /* ===== TERMINAL (inchangé) ===== */
+        .terminal-container {
+            background: #0c0f14;
+            color: #19f9d8;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            border-radius: 15px;
+            width: 85%;
+            max-width: 1100px;
+            margin: 50px auto;
+            box-shadow: 0 0 30px rgba(25,249,216,0.3);
+        }
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(25,249,216,0.2);
+        }
+        .led {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
+        .title {
+            margin-left: 10px;
+            color: #89f7fe;
+            text-shadow: 0 0 5px rgba(137,247,254,0.5);
+        }
+        .terminal-body {
+            min-height: 250px;
+            max-height: 450px;
+            overflow-y: auto;
+            padding: 15px 0;
+        }
+        .prompt { color: #50fa7b; }
+        .cmd { color: #f1fa8c; }
+        .terminal-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #19f9d8;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            margin-top: 15px;
+            outline: none;
+            padding: 10px 0;
+            border-top: 1px solid rgba(25,249,216,0.2);
+        }
+        .terminal-input::placeholder {
+            color: rgba(25,249,216,0.5);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem; }
+            .hero-subtitle { font-size: 1rem; }
+            section.card { padding: 25px; }
+            .steps { flex-direction: column; }
+        }
+    </style>
+
+    <!-- =============================
+         SCRIPT TERMINAL (inchangé)
+         ============================= -->
+    <script>
+        const terminal = document.getElementById("terminal");
+        const input = document.getElementById("terminal-input");
+
+        function print(t){
+            terminal.innerHTML += `<p>${t}</p>`;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        input.addEventListener("keydown", (e)=>{
+            if(e.key==="Enter"){
+                const cmd = input.value.trim().toLowerCase();
+                print(`<span class="prompt">$</span> ${cmd}`);
+
+                if(cmd==="help"){
+                    print("Voici les explications que je peux donner :");
+                    print("<span class='cmd'>pourquoi</span>   - Pourquoi Linux est utile");
+                    print("<span class='cmd'>installer</span>  - Comment installer Linux simplement");
+                    print("<span class='cmd'>usb</span>        - Comment faire une clé USB pour installer Linux");
+                    print("<span class='cmd'>bios</span>       - Comment démarrer l'ordinateur sur la clé USB");
+                    print("<span class='cmd'>logiciels</span>  - Quels programmes pratiques utiliser");
+                    print("<span class='cmd'>astuces</span>    - Conseils faciles pour bien commencer");
+                    print("<span class='cmd'>clear</span>      - Effacer l'écran");
+                }
+                else if(cmd==="pourquoi"){
+                    print("Pourquoi Linux est intéressant :");
+                    print("• C'est gratuit. Tu ne paies rien.");
+                    print("• C'est très sécurisé : moins de virus.");
+                    print("• Ça marche bien même sur de vieux ordinateurs.");
+                    print("• Tu peux faire tout ce que tu fais déjà : Internet, vidéos, documents…");
+                    print("• C'est simple, et tu peux tester sans rien casser.");
+                }
+                else if(cmd==="installer"){
+                    print("Installer Linux, c'est comme installer un nouveau téléphone :");
+                    print("1. Télécharger le fichier d'installation (appelé ISO).");
+                    print("2. Le mettre sur une clé USB (voir commande 'usb').");
+                    print("3. Démarrer dessus (voir commande 'bios').");
+                    print("4. Suivre les instructions, c'est très simple.");
+                    print("5. L'ordinateur redémarre avec Linux.");
+                }
+                else if(cmd==="usb"){
+                    print("Faire une clé USB spéciale :");
+                    print("• Prends une clé USB vide.");
+                    print("• Télécharge un petit programme comme Etcher ou Rufus.");
+                    print("• Choisis l'ISO + la clé USB.");
+                    print("• Clique sur 'OK'. Ton installation Linux est prête.");
+                }
+                else if(cmd==="bios"){
+                    print("Pour démarrer sur la clé USB :");
+                    print("• Redémarre le PC.");
+                    print("• Appuie plusieurs fois sur F12, F2, ESC ou DEL.");
+                    print("• Choisis ta clé USB.");
+                }
+                else if(cmd==="logiciels"){
+                    print("Quelques programmes utiles :");
+                    print("• LibreOffice : documents");
+                    print("• Firefox : internet");
+                    print("• VLC : vidéos");
+                    print("• GIMP : images");
+                    print("• VS Code / Geany : programmation");
+                    print("• Thunderbird : e-mails");
+                }
+                else if(cmd==="astuces"){
+                    print("Astuces :");
+                    print("• Mets ton système à jour quand il te le demande.");
+                    print("• Installe les logiciels depuis la boutique.");
+                    print("• Teste Linux sans installer si tu veux.");
+                    print("• Tu ne peux presque rien casser, rassure‑toi.");
+                }
+                else if(cmd==="clear"){
+                    terminal.innerHTML = "";
+                }
+                else {
+                    print("Désolé, je ne connais pas cette commande. Tape <span class='cmd'>help</span>.");
+                }
+
+                input.value="";
+            }
+        });
+
+        // Bonus : clic sur commande = copie dans terminal
+        document.querySelectorAll('.command-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const cmd = item.getAttribute('data-cmd');
+                input.value = cmd;
+                input.focus();
+            });
+        });
+    </script>
+
+{% endblock %}
