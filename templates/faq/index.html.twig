@@ -13,9 +13,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ffffff; /* fond blanc demandé */
             min-height: 100vh;
             padding: 40px 20px;
+            color: #1f2937; /* texte principal sombre */
         }
 
         .container {
@@ -26,18 +27,19 @@
         .header {
             text-align: center;
             margin-bottom: 60px;
-            color: white;
+            color: #0f172a; /* titre plus foncé */
         }
 
         .header h1 {
             font-size: 3rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: none;
         }
 
         .header p {
             font-size: 1.2rem;
-            opacity: 0.9;
+            opacity: 0.85;
+            color: #334155;
         }
 
         .faq-grid {
@@ -48,14 +50,15 @@
         }
 
         .faq-card {
-            background: white;
+            background: #fafafa; /* carte légèrement grisée pour contraste sur fond blanc */
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 18px rgba(15,23,42,0.06);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(15,23,42,0.04);
         }
 
         .faq-card::before {
@@ -65,7 +68,7 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #4f46e5, #b91cfa); /* accent visible sur blanc */
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
@@ -75,8 +78,8 @@
         }
 
         .faq-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(2,6,23,0.07);
         }
 
         .faq-icon {
@@ -87,36 +90,37 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
-            font-size: 2rem;
+            font-size: 1.9rem;
             transition: transform 0.3s ease;
+            color: #fff;
         }
 
         .faq-card:hover .faq-icon {
             transform: rotate(360deg);
         }
 
-        .icon-linux { background: linear-gradient(135deg, #9C27B0, #E040FB); }
-        .icon-tools { background: linear-gradient(135deg, #FF9800, #FFB74D); }
-        .icon-recondition { background: linear-gradient(135deg, #00C853, #69F0AE); }
-        .icon-map { background: linear-gradient(135deg, #00BCD4, #4DD0E1); }
-        .icon-approach { background: linear-gradient(135deg, #EC407A, #F48FB1); }
-        .icon-design { background: linear-gradient(135deg, #F44336, #EF5350); }
+        .icon-linux { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+        .icon-tools { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #111; }
+        .icon-recondition { background: linear-gradient(135deg, #16a34a, #86efac); color: #07102a; }
+        .icon-map { background: linear-gradient(135deg, #0891b2, #60a5fa); }
+        .icon-approach { background: linear-gradient(135deg, #db2777, #f472b6); }
+        .icon-design { background: linear-gradient(135deg, #ef4444, #fb7185); }
 
         .faq-card h3 {
-            font-size: 1.4rem;
-            color: #333;
-            margin-bottom: 15px;
+            font-size: 1.35rem;
+            color: #0f172a;
+            margin-bottom: 12px;
         }
 
         .faq-card p {
-            color: #666;
+            color: #475569;
             line-height: 1.6;
             font-size: 0.95rem;
         }
 
         .faq-detail {
-            background: white;
-            border-radius: 20px;
+            background: transparent;
+            border-radius: 12px;
             padding: 0;
             max-height: 0;
             overflow: hidden;
@@ -127,9 +131,9 @@
 
         .faq-card.active .faq-detail {
             max-height: 500px;
-            padding: 20px;
+            padding: 12px 0 0 0;
             opacity: 1;
-            border-top: 2px solid #f0f0f0;
+            border-top: 1px solid rgba(2,6,23,0.04);
         }
 
         .expand-btn {
@@ -139,13 +143,14 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4f46e5, #b91cfa);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
+            font-size: 1.1rem;
+            transition: transform 0.25s ease;
+            box-shadow: 0 4px 10px rgba(79,70,229,0.2);
         }
 
         .faq-card.active .expand-btn {
@@ -157,48 +162,49 @@
         }
 
         .accordion-item {
-            background: white;
+            background: #ffffff;
             border-radius: 15px;
             margin-bottom: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 18px rgba(2,6,23,0.04);
             transition: all 0.3s ease;
+            border: 1px solid rgba(2,6,23,0.03);
         }
 
         .accordion-item:hover {
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(2,6,23,0.06);
         }
 
         .accordion-header {
-            padding: 25px 30px;
+            padding: 22px 28px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: white;
-            transition: background 0.3s ease;
+            background: transparent;
+            transition: background 0.2s ease;
         }
 
         .accordion-header:hover {
-            background: #f8f9fa;
+            background: #fbfdff;
         }
 
         .accordion-header h4 {
-            font-size: 1.1rem;
-            color: #333;
+            font-size: 1.05rem;
+            color: #0f172a;
             flex: 1;
         }
 
         .accordion-toggle {
-            width: 30px;
-            height: 30px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4f46e5, #b91cfa);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: transform 0.3s ease;
         }
 
@@ -210,16 +216,16 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease, padding 0.4s ease;
-            padding: 0 30px;
+            padding: 0 28px;
         }
 
         .accordion-item.active .accordion-content {
             max-height: 500px;
-            padding: 0 30px 25px 30px;
+            padding: 0 28px 18px 28px;
         }
 
         .accordion-content p {
-            color: #666;
+            color: #475569;
             line-height: 1.8;
         }
 
