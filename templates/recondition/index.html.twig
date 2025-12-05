@@ -1,11 +1,624 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello ReconditionController!{% endblock %}
-{% block stylesheets %}
-
-    <link rel="stylesheet" href="{{ asset('assets/styles/recondition.css') }}">
-{% endblock %}
 {% block body %}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        overflow-x: hidden;
+        background: white;
+    }
+
+    /* Hero avec jeu interactif de reconditionnement */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: linear-gradient(to bottom right, #eef2ff, #ffffff, #faf5ff);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Background animations comme la page home */
+    .blob {
+        position: absolute;
+        width: 384px;
+        height: 384px;
+        border-radius: 9999px;
+        mix-blend-mode: multiply;
+        filter: blur(64px);
+        opacity: 0.2;
+        animation: blob 7s infinite;
+    }
+
+    .blob-1 {
+        top: 0;
+        left: 0;
+        background: #d8b4fe;
+    }
+
+    .blob-2 {
+        top: 0;
+        right: 0;
+        background: #22c55e;
+        animation-delay: 2s;
+    }
+
+    .blob-3 {
+        bottom: 0;
+        left: 50%;
+        background: #fbcfe8;
+        animation-delay: 4s;
+    }
+
+    @keyframes blob {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+        }
+        33% {
+            transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+            transform: translate(-20px, 20px) scale(0.9);
+        }
+    }
+
+    .grid-pattern {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(to right, rgba(229, 231, 235, 0.3) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(229, 231, 235, 0.3) 1px, transparent 1px);
+        background-size: 40px 40px;
+        opacity: 0.5;
+    }
+
+    /* Bouton retour home */
+    .home-button {
+        position: fixed;
+        top: 2rem;
+        left: 2rem;
+        z-index: 100;
+        background: white;
+        color: #9333ea;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        text-decoration: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 2px solid #e5e7eb;
+    }
+
+    .home-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(147, 51, 234, 0.3);
+        border-color: #9333ea;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: bold;
+        background: linear-gradient(to right, #22c55e, #3b82f6, #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        z-index: 10;
+        text-align: center;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: #4b5563;
+        margin-bottom: 3rem;
+        z-index: 10;
+        text-align: center;
+    }
+
+    /* Zone de jeu interactive */
+    .game-container {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        max-width: 900px;
+        width: 100%;
+    }
+
+    .game-instruction {
+        font-size: 1.25rem;
+        color: #22c55e;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+    }
+
+    .workspace {
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .components-zone, .assembly-zone {
+        flex: 1;
+        min-width: 300px;
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .zone-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #1f2937;
+        font-weight: bold;
+    }
+
+    .components-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .component {
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        cursor: grab;
+        transition: all 0.3s ease;
+        user-select: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .component:hover {
+        transform: scale(1.05) rotate(2deg);
+        box-shadow: 0 10px 30px rgba(147, 51, 234, 0.2);
+        border-color: #c084fc;
+    }
+
+    .component.assembled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        transform: scale(0.9);
+    }
+
+    .component-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .component-name {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .pc-display {
+        position: relative;
+        width: 250px;
+        height: 300px;
+        margin: 0 auto;
+        background: #f9fafb;
+        border-radius: 1rem;
+        border: 3px dashed #d1d5db;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.5s ease;
+    }
+
+    .pc-display.complete {
+        border-color: #22c55e;
+        border-style: solid;
+        background: linear-gradient(135deg, #f0fdf4, #dbeafe);
+        animation: glow 2s infinite;
+    }
+
+    .pc-display.complete::after {
+        content: '✨ COMPLET ✨';
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(to right, #22c55e, #10b981);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 0.875rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        animation: popIn 0.5s ease-out;
+    }
+
+    @keyframes popIn {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) scale(0);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+    }
+
+    @keyframes glow {
+        0%, 100% {
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+        }
+        50% {
+            box-shadow: 0 0 40px rgba(147, 51, 234, 0.6);
+        }
+    }
+
+    .assembled-part {
+        position: absolute;
+        animation: partAppear 0.5s ease-out;
+    }
+
+    @keyframes partAppear {
+        from {
+            opacity: 0;
+            transform: scale(0) rotate(180deg);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 30px;
+        background: #f3f4f6;
+        border-radius: 1rem;
+        overflow: hidden;
+        margin-top: 2rem;
+        border: 2px solid #e5e7eb;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(to right, #9333ea, #db2777);
+        width: 0%;
+        transition: width 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+    }
+
+    .success-message {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #22c55e, #10b981);
+        border-radius: 1rem;
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: white;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.5s ease;
+        box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+    }
+
+    .success-message.show {
+        opacity: 1;
+        transform: scale(1);
+        animation: bounce-in 0.6s ease-out;
+    }
+
+    @keyframes bounce-in {
+        0% {
+            transform: scale(0);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    /* Section contenu qui apparaît après le jeu */
+    .content-section {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 1s ease;
+        background: white;
+    }
+
+    .content-section.revealed {
+        opacity: 1;
+        max-height: 10000px;
+    }
+
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+    }
+
+    .pillar {
+        margin-bottom: 4rem;
+        padding: 3rem;
+        background: white;
+        border-left: 6px solid;
+        border-radius: 1rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        transform: translateX(-50px);
+        opacity: 0;
+        transition: all 0.8s ease;
+    }
+
+    .pillar.visible {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .pillar-1 { border-color: #a855f7; }
+    .pillar-2 { border-color: #3b82f6; }
+    .pillar-3 { border-color: #22c55e; }
+
+    .pillar-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .pillar-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+    }
+
+    .pillar-1 .pillar-icon { background: linear-gradient(135deg, #a855f7, #ec4899); }
+    .pillar-2 .pillar-icon { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .pillar-3 .pillar-icon { background: linear-gradient(135deg, #22c55e, #10b981); }
+
+    .pillar-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1f2937;
+    }
+
+    .pillar-content {
+        color: #4b5563;
+        line-height: 1.8;
+        font-size: 1.125rem;
+    }
+
+    .pillar-content p {
+        margin-bottom: 1rem;
+    }
+
+    .pillar-list {
+        list-style: none;
+        margin-top: 1.5rem;
+    }
+
+    .pillar-list li {
+        padding: 0.75rem 0;
+        padding-left: 2rem;
+        position: relative;
+        color: #374151;
+    }
+
+    .pillar-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: #22c55e;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    .definition-box {
+        background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+        border: 2px solid #86efac;
+        border-left: 6px solid #22c55e;
+        padding: 2.5rem;
+        border-radius: 1rem;
+        margin-bottom: 4rem;
+        box-shadow: 0 10px 30px rgba(34, 197, 94, 0.1);
+    }
+
+    .definition-title {
+        font-size: 2rem;
+        color: #166534;
+        margin-bottom: 1rem;
+        font-weight: bold;
+    }
+
+    .definition-text {
+        color: #374151;
+        line-height: 1.8;
+        font-size: 1.125rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .workspace {
+            flex-direction: column;
+        }
+
+        .components-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .pillar {
+            padding: 2rem;
+        }
+
+        .pillar-header {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
+    .scroll-hint {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #22c55e;
+        font-size: 2rem;
+        animation: bounce 2s infinite;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    .scroll-hint.show {
+        opacity: 1;
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateX(-50%) translateY(0);
+        }
+        50% {
+            transform: translateX(-50%) translateY(-10px);
+        }
+    }
+</style>
+<script>
+    // Jeu de reconditionnement
+    let assembledParts = new Set();
+    const totalParts = 6;
+
+    const partPositions = {
+        screen: { emoji: '🖥️', top: '20%', left: '50%', transform: 'translateX(-50%)', size: '60px' },
+        keyboard: { emoji: '⌨️', bottom: '25%', left: '50%', transform: 'translateX(-50%)', size: '40px' },
+        mouse: { emoji: '🖱️', bottom: '20%', right: '20%', size: '30px' },
+        cpu: { emoji: '🧠', top: '40%', left: '20%', size: '35px' },
+        ram: { emoji: '💾', top: '40%', right: '20%', size: '35px' },
+        disk: { emoji: '💿', bottom: '45%', left: '50%', transform: 'translateX(-50%)', size: '30px' }
+    };
+
+    // Attacher les événements aux composants
+    document.addEventListener('DOMContentLoaded', function() {
+        const components = document.querySelectorAll('.component');
+
+        components.forEach(component => {
+            component.addEventListener('click', function() {
+                const partName = this.getAttribute('data-part');
+                assemblePart(partName);
+            });
+        });
+    });
+
+    function assemblePart(partName) {
+        if (assembledParts.has(partName)) return;
+
+        assembledParts.add(partName);
+
+        // Marquer le composant comme assemblé
+        const component = document.querySelector(`[data-part="${partName}"]`);
+        component.classList.add('assembled');
+
+        // Ajouter la pièce au PC
+        const pcDisplay = document.getElementById('pcDisplay');
+        const part = document.createElement('div');
+        part.className = 'assembled-part';
+        part.style.fontSize = partPositions[partName].size;
+        part.textContent = partPositions[partName].emoji;
+
+        Object.keys(partPositions[partName]).forEach(key => {
+            if (key !== 'emoji' && key !== 'size') {
+                part.style[key] = partPositions[partName][key];
+            }
+        });
+
+        pcDisplay.appendChild(part);
+
+        // Mettre à jour la progression
+        const progress = (assembledParts.size / totalParts) * 100;
+        const progressFill = document.getElementById('progressFill');
+        progressFill.style.width = progress + '%';
+        progressFill.textContent = Math.round(progress) + '%';
+
+        // Si tout est assemblé
+        if (assembledParts.size === totalParts) {
+            setTimeout(() => {
+                // Marquer le PC comme complet
+                pcDisplay.classList.add('complete');
+
+                // Changer l'instruction
+                document.getElementById('instruction').textContent = '🎉 Félicitations ! PC reconditionné !';
+
+                // Afficher le message de succès
+                document.getElementById('successMessage').classList.add('show');
+                document.getElementById('scrollHint').classList.add('show');
+
+                // Afficher une alerte après une courte pause
+                setTimeout(() => {
+                    alert('🎉 Bravo ! Vous avez reconditionné un PC avec succès !\n\n' +
+                        '✅ Toutes les pièces ont été assemblées\n' +
+                        '✅ Le système est prêt à être utilisé\n' +
+                        '✅ Une nouvelle vie pour cet ordinateur !\n\n' +
+                        'Découvrez maintenant les 3 piliers du reconditionnement en scrollant vers le bas.');
+                }, 800);
+
+                // Révéler le contenu
+                setTimeout(() => {
+                    document.getElementById('contentSection').classList.add('revealed');
+
+                    // Animer les piliers au scroll
+                    const observerOptions = {
+                        threshold: 0.2,
+                        rootMargin: '0px'
+                    };
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                            }
+                        });
+                    }, observerOptions);
+
+                    document.querySelectorAll('.pillar').forEach(pillar => {
+                        observer.observe(pillar);
+                    });
+                }, 1000);
+            }, 500);
+        }
+    }
+</script>
 
 </head>
 <body>
