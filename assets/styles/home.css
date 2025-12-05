@@ -12,7 +12,7 @@ body {
 .container {
     min-height: 100vh;
     background: white;
-    position: relative;
+    
     overflow: hidden;
 }
 
