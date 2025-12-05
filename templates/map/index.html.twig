@@ -1,0 +1,165 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MapController!{% endblock %}
+
+{% block body %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('/styles/map.css') }}">
+{% endblock %}
+
+    <!-- Bouton retour home -->
+    <a href="{{ path('app_home') }}" class="home-button">
+        <span style="font-size: 1.25rem;">←</span>
+        Retour à l'accueil
+    </a>
+
+    <!-- Hero avec carte interactive -->
+    <section class="hero">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="grid-pattern"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">Les Collectivités</h1>
+            <p class="hero-subtitle">Des acteurs clés de la transformation numérique</p>
+
+            <p class="game-instruction">
+                🗺️ Découvrez les collectivités pionnières ! Cliquez sur les marqueurs
+            </p>
+
+            <div class="map-container">
+                <div class="france-map" style="width: 400px; height: 400px; margin: 0 auto; position: relative; background: linear-gradient(to bottom, #dbeafe 0%, #e0e7ff 50%, #fae8ff 100%); border-radius: 1rem; border: 3px solid #e5e7eb;">
+                    <!-- Représentation simplifiée de la France -->
+                    <img src="{{ asset('/images/france nird.jpg') }}" alt="Carte de France" style="width: 100%; height: auto; opacity: 0.2;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 8rem; opacity: 0.1;">🇫🇷</div>
+
+                    <!-- Marqueurs des régions -->
+                    <div class="region-marker region-lyon" data-region="lyon">🏛️</div>
+                    <div class="region-marker region-strasbourg" data-region="strasbourg">🏛️</div>
+                    <div class="region-marker region-grenoble" data-region="grenoble">🏛️</div>
+                    <div class="region-marker region-centre" data-region="centre">🏛️</div>
+                    <div class="region-marker region-aura" data-region="aura">🏛️</div>
+                    <div class="region-marker region-blois" data-region="blois">🏛️</div>
+                    <div class="region-marker region-angouleme" data-region="angouleme">🏛️</div>
+                </div>
+
+                <div class="progress-counter">
+                    <span class="count" id="discoveredCount">0</span> / 7 collectivités découvertes
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    🎉 Bravo ! Vous avez découvert toutes les collectivités pionnières !<br>
+                    <small>Découvrez maintenant comment elles soutiennent la démarche NIRD ⬇️</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-hint" id="scrollHint">⬇️</div>
+    </section>
+
+    <!-- Modal info région -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <p class="modal-text" id="modalText"></p>
+        </div>
+    </div>
+
+    <!-- Section contenu -->
+    <section class="content-section" id="contentSection">
+        <div class="content-container">
+            <h2 class="section-title">Pourquoi les collectivités ont tout à gagner</h2>
+
+            <div class="benefit-card">
+                <div class="card-icon">🌍</div>
+                <h3 class="card-title">Engagement environnemental concret</h3>
+                <p class="card-text">
+                    Prolonger la durée de vie des équipements numériques et réduire les déchets électroniques.
+                </p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="card-icon">🤝</div>
+                <h3 class="card-title">Réduction des fractures numériques</h3>
+                <p class="card-text">
+                    Offrir à tous les élèves un accès équitable à des outils numériques libres et collaboratifs.
+                </p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="card-icon">🎓</div>
+                <h3 class="card-title">Levier éducatif et citoyen</h3>
+                <p class="card-text">
+                    Permettre aux élèves de devenir acteurs d'une transformation numérique responsable.
+                </p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="card-icon">🔐</div>
+                <h3 class="card-title">Sécurité et souveraineté numérique</h3>
+                <p class="card-text">
+                    Linux et les logiciels libres réduisent la dépendance vis-à-vis d'acteurs privés et renforcent la protection des données.
+                </p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="card-icon">💰</div>
+                <h3 class="card-title">Investissement maîtrisé</h3>
+                <p class="card-text">
+                    Diminuer les coûts liés aux licences logicielles et à l'achat de matériel neuf. À Échirolles, l'utilisation de logiciels libres permet d'économiser environ 350 000€ par an sur un budget d'un million !
+                </p>
+            </div>
+
+            <h2 class="section-title" style="margin-top: 4rem;">Comment accompagner la démarche</h2>
+
+            <div class="action-card">
+                <div class="card-icon">⚙️</div>
+                <h3 class="card-title">Faciliter l'intégration technique</h3>
+                <p class="card-text">
+                    Prévoir la compatibilité et l'accès aux réseaux et serveurs pour les postes équipés de Linux.
+                </p>
+            </div>
+
+            <div class="action-card">
+                <div class="card-icon">💼</div>
+                <h3 class="card-title">Accompagner financièrement</h3>
+                <p class="card-text">
+                    Soutenir le transport, le stockage ou la logistique liés au reconditionnement, ainsi que l'achat de pièces détachées.
+                </p>
+            </div>
+
+            <div class="action-card">
+                <div class="card-icon">🌟</div>
+                <h3 class="card-title">Valoriser les initiatives locales</h3>
+                <p class="card-text">
+                    Reconnaître et promouvoir les projets des établissements pilotes dans une stratégie numérique territoriale.
+                </p>
+            </div>
+
+            <div class="action-card">
+                <div class="card-icon">📚</div>
+                <h3 class="card-title">Former et sensibiliser</h3>
+                <p class="card-text">
+                    Encourager la montée en compétences des personnels techniques sur Linux et le reconditionnement.
+                </p>
+            </div>
+
+            <div class="action-card">
+                <div class="card-icon">🏛️</div>
+                <h3 class="card-title">Agir sur la gouvernance numérique</h3>
+                <p class="card-text">
+                    Inscrire l'usage de Linux et des logiciels libres dans les schémas directeurs et adapter les marchés publics.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+
+     <script src="{{ asset('/map.js') }}"></script>
+
+{% endblock %}
