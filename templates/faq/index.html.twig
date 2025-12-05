@@ -1,0 +1,368 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FaqController!{% endblock %}
+
+{% block body %}
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff; /* fond blanc demandé */
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1f2937; /* texte principal sombre */
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: #0f172a; /* titre plus foncé */
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: none;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.85;
+            color: #334155;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .faq-card {
+            background: #fafafa; /* carte légèrement grisée pour contraste sur fond blanc */
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(15,23,42,0.04);
+        }
+
+        .faq-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #4f46e5, #b91cfa); /* accent visible sur blanc */
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .faq-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(2,6,23,0.07);
+        }
+
+        .faq-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.9rem;
+            transition: transform 0.3s ease;
+            color: #fff;
+        }
+
+        .faq-card:hover .faq-icon {
+            transform: rotate(360deg);
+        }
+
+        .icon-linux { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+        .icon-tools { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #111; }
+        .icon-recondition { background: linear-gradient(135deg, #16a34a, #86efac); color: #07102a; }
+        .icon-map { background: linear-gradient(135deg, #0891b2, #60a5fa); }
+        .icon-approach { background: linear-gradient(135deg, #db2777, #f472b6); }
+        .icon-design { background: linear-gradient(135deg, #ef4444, #fb7185); }
+
+        .faq-card h3 {
+            font-size: 1.35rem;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .faq-card p {
+            color: #475569;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .faq-detail {
+            background: transparent;
+            border-radius: 12px;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            margin-top: 15px;
+            opacity: 0;
+        }
+
+        .faq-card.active .faq-detail {
+            max-height: 500px;
+            padding: 12px 0 0 0;
+            opacity: 1;
+            border-top: 1px solid rgba(2,6,23,0.04);
+        }
+
+        .expand-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #b91cfa);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: transform 0.25s ease;
+            box-shadow: 0 4px 10px rgba(79,70,229,0.2);
+        }
+
+        .faq-card.active .expand-btn {
+            transform: rotate(45deg);
+        }
+
+        .accordion-section {
+            margin-top: 40px;
+        }
+
+        .accordion-item {
+            background: #ffffff;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(2,6,23,0.04);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(2,6,23,0.03);
+        }
+
+        .accordion-item:hover {
+            box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+        }
+
+        .accordion-header {
+            padding: 22px 28px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            transition: background 0.2s ease;
+        }
+
+        .accordion-header:hover {
+            background: #fbfdff;
+        }
+
+        .accordion-header h4 {
+            font-size: 1.05rem;
+            color: #0f172a;
+            flex: 1;
+        }
+
+        .accordion-toggle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #b91cfa);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-toggle {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 28px;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+            padding: 0 28px 18px 28px;
+        }
+
+        .accordion-content p {
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <div class="container">
+
+    <a href="{{ path('app_home') }}" class="home-button">
+        <span style="font-size: 1.25rem;">←</span>
+        Retour à l'accueil
+    </a>
+
+        <div class="header">
+            <h1>❓ Questions Fréquentes</h1>
+            <p>Tout ce que vous devez savoir sur NIRD</p>
+        </div>
+
+        <div class="faq-grid">
+            <div class="faq-card" onclick="toggleCard(this)">
+                <div class="expand-btn">+</div>
+                <div class="faq-icon icon-linux">🐧</div>
+                <h3>Pourquoi Linux ?</h3>
+                <p>Découvrez les avantages d'un système libre et open source</p>
+                <div class="faq-detail">
+                    <p>Linux permet de redonner vie à d'anciens ordinateurs, de garantir la sécurité de vos données, et de vous libérer des licences propriétaires. C'est un choix éthique et performant pour un numérique durable.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleCard(this)">
+                <div class="expand-btn">+</div>
+                <div class="faq-icon icon-tools">🔧</div>
+                <h3>Boîte à outils</h3>
+                <p>Des ressources pour démarrer facilement</p>
+                <div class="faq-detail">
+                    <p>Accédez à une collection d'outils libres et gratuits : logiciels éducatifs, guides d'installation, tutoriels vidéo et support communautaire pour vous accompagner dans votre transition numérique.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleCard(this)">
+                <div class="expand-btn">+</div>
+                <div class="faq-icon icon-recondition">♻️</div>
+                <h3>Reconditionnement</h3>
+                <p>Donnez une seconde vie au matériel</p>
+                <div class="faq-detail">
+                    <p>Le reconditionnement réduit les déchets électroniques et permet l'accès au numérique pour tous. Avec Linux, même un vieux PC peut redevenir performant et utile pour les écoles.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleCard(this)">
+                <div class="expand-btn">+</div>
+                <div class="faq-icon icon-map">🗺️</div>
+                <h3>Cartographie</h3>
+                <p>Trouvez les acteurs près de chez vous</p>
+                <div class="faq-detail">
+                    <p>Notre carte interactive recense les associations, ressourceries et établissements engagés dans le numérique responsable. Connectez-vous localement pour agir globalement.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleCard(this)">
+                <div class="expand-btn">+</div>
+                <div class="faq-icon icon-approach">📋</div>
+                <h3>Notre démarche</h3>
+                <p>Une approche inclusive et collaborative</p>
+                <div class="faq-detail">
+                    <p>NIRD s'inscrit dans une démarche éducative et citoyenne visant à réduire la fracture numérique tout en respectant l'environnement. Nous croyons en l'éducation et le partage des savoirs.</p>
+                </div>
+            </div>
+
+            <div class="faq-card" onclick="toggleCard(this)">
+                <div class="expand-btn">+</div>
+                <div class="faq-icon icon-design">❤️</div>
+                <h3>Design éthique</h3>
+                <p>Un numérique qui a du sens</p>
+                <div class="faq-detail">
+                    <p>Au-delà de la performance technique, nous valorisons un design accessible, respectueux de la vie privée et sobre. Le "sexy" c'est l'éthique et la durabilité !</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-section">
+            <div class="accordion-item" onclick="toggleAccordion(this)">
+                <div class="accordion-header">
+                    <h4>🎓 Comment NIRD s'intègre dans l'éducation nationale ?</h4>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p>NIRD est hébergé sur la forge du ministère de l'Éducation nationale et propose des ressources adaptées aux enseignants et établissements scolaires. Nous fournissons des solutions clés en main pour équiper les salles informatiques avec du matériel reconditionné et des logiciels libres.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item" onclick="toggleAccordion(this)">
+                <div class="accordion-header">
+                    <h4>💰 Est-ce gratuit ?</h4>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p>Oui ! Toutes nos ressources sont libres et gratuites. Les logiciels que nous recommandons sont open source, et nos guides sont accessibles à tous. L'objectif est de démocratiser l'accès à un numérique de qualité.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item" onclick="toggleAccordion(this)">
+                <div class="accordion-header">
+                    <h4>🤝 Comment contribuer au projet ?</h4>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p>Vous pouvez participer en partageant vos expériences, en proposant des tutoriels, en signalant des acteurs locaux pour notre carte, ou en rejoignant notre communauté. Chaque contribution compte !</p>
+                </div>
+            </div>
+
+            <div class="accordion-item" onclick="toggleAccordion(this)">
+                <div class="accordion-header">
+                    <h4>🌍 Quel impact environnemental ?</h4>
+                    <div class="accordion-toggle">▼</div>
+                </div>
+                <div class="accordion-content">
+                    <p>En privilégiant le reconditionnement et les logiciels légers, nous réduisons drastiquement l'empreinte carbone du numérique éducatif. Un ordinateur reconditionné économise environ 240 kg de CO2 par rapport à un neuf.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('active');
+        }
+
+        function toggleAccordion(item) {
+            item.classList.toggle('active');
+        }
+    </script>
+{% endblock %}

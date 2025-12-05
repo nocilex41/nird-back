@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReconditionController!{% endblock %}
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ asset('assets/styles/recondition.css') }}">
+{% endblock %}
+{% block body %}
+
+</head>
+<body>
+    <!-- Bouton retour home -->
+    <a  href="{{ path('app_home') }}" class="home-button">
+        <span style="font-size: 1.25rem;">←</span>
+        Retour à l'accueil
+    </a>
+
+    <!-- Hero avec jeu interactif -->
+    <section class="hero">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="grid-pattern"></div>
+
+        <h1 class="hero-title">Le Reconditionnement</h1>
+        <p class="hero-subtitle">Reconstituez un PC pour découvrir la démarche</p>
+
+        <div class="game-container">
+            <p class="game-instruction" id="instruction">
+                🎮 Cliquez sur les composants pour reconditionner le PC
+            </p>
+
+            <div class="workspace">
+                <div class="components-zone">
+                    <h3 class="zone-title">Composants disponibles</h3>
+                    <div class="components-grid" id="componentsGrid">
+                        <div class="component" data-part="screen">
+                            <div class="component-icon">🖥️</div>
+                            <div class="component-name">Écran</div>
+                        </div>
+                        <div class="component" data-part="keyboard">
+                            <div class="component-icon">⌨️</div>
+                            <div class="component-name">Clavier</div>
+                        </div>
+                        <div class="component" data-part="mouse">
+                            <div class="component-icon">🖱️</div>
+                            <div class="component-name">Souris</div>
+                        </div>
+                        <div class="component" data-part="cpu">
+                            <div class="component-icon">🧠</div>
+                            <div class="component-name">Processeur</div>
+                        </div>
+                        <div class="component" data-part="ram">
+                            <div class="component-icon">💾</div>
+                            <div class="component-name">RAM</div>
+                        </div>
+                        <div class="component" data-part="disk">
+                            <div class="component-icon">💿</div>
+                            <div class="component-name">Disque dur</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="assembly-zone">
+                    <h3 class="zone-title">Zone d'assemblage</h3>
+                    <div class="pc-display" id="pcDisplay">
+                        <span style="font-size: 3rem; opacity: 0.3;">🖥️</span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                ✨ PC reconditionné avec succès ! ✨<br>
+                <small>Découvrez maintenant les 3 piliers du reconditionnement ⬇️</small>
+            </div>
+        </div>
+
+        <div class="scroll-hint" id="scrollHint">⬇️</div>
+    </section>
+
+    <!-- Contenu qui se révèle -->
+    <section class="content-section" id="contentSection">
+        <div class="content-container">
+            <div class="definition-box">
+                <h2 class="definition-title">Qu'est-ce que le reconditionnement ?</h2>
+                <p class="definition-text">
+                    Le reconditionnement de PC désigne le processus de remise en état d'ordinateurs non-neufs pour leur donner une seconde vie, tout en garantissant leur bon fonctionnement et leur conformité aux besoins des utilisateurs. En pratique, cela consiste à récupérer des ordinateurs usagés, effacer les données personnelles, nettoyer et réparer les composants, tester et remplacer les pièces défectueuses, et réinstaller un système d'exploitation libre comme Linux.
+                </p>
+            </div>
+
+            <div class="pillar pillar-1">
+                <div class="pillar-header">
+                    <div class="pillar-icon">👥</div>
+                    <div>
+                        <h3 class="pillar-title">1. Un choix inclusif</h3>
+                        <p style="color: #9ca3af; margin-top: 0.5rem;">Un apprentissage actif et valorisant pour tous</p>
+                    </div>
+                </div>
+                <div class="pillar-content">
+                    <p>Mettre les élèves au cœur du reconditionnement informatique transforme une activité technique en véritable levier pédagogique.</p>
+                    <ul class="pillar-list">
+                        <li><strong>Apprendre en faisant :</strong> développer des compétences concrètes en informatique</li>
+                        <li><strong>Valoriser tous les profils :</strong> chaque élève contribue selon ses talents</li>
+                        <li><strong>Encourager l'autonomie :</strong> devenir acteurs d'un projet concret</li>
+                        <li><strong>Réduire les inégalités :</strong> redistribution solidaire aux familles</li>
+                        <li><strong>Mobiliser la communauté :</strong> impliquer toute la communauté éducative</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pillar pillar-2">
+                <div class="pillar-header">
+                    <div class="pillar-icon">🎯</div>
+                    <div>
+                        <h3 class="pillar-title">2. Un choix responsable</h3>
+                        <p style="color: #9ca3af; margin-top: 0.5rem;">Former à la citoyenneté numérique et à l'esprit critique</p>
+                    </div>
+                </div>
+                <div class="pillar-content">
+                    <p>Confier aux élèves la responsabilité du reconditionnement est une manière d'enseigner la responsabilité individuelle et collective.</p>
+                    <ul class="pillar-list">
+                        <li><strong>Esprit d'équipe :</strong> coopération et organisation essentielles</li>
+                        <li><strong>Éthique des données :</strong> importance de la protection de la vie privée</li>
+                        <li><strong>Esprit critique :</strong> comprendre pour mieux juger les outils numériques</li>
+                        <li><strong>Culture citoyenne :</strong> l'informatique comme commun numérique</li>
+                        <li><strong>Réseau de partenaires :</strong> collaboration territoriale</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pillar pillar-3">
+                <div class="pillar-header">
+                    <div class="pillar-icon">🌱</div>
+                    <div>
+                        <h3 class="pillar-title">3. Un choix durable</h3>
+                        <p style="color: #9ca3af; margin-top: 0.5rem;">Agir concrètement pour l'environnement</p>
+                    </div>
+                </div>
+                <div class="pillar-content">
+                    <p>Le reconditionnement par les élèves est une expérience de développement durable appliqué.</p>
+                    <ul class="pillar-list">
+                        <li><strong>Allonger la durée de vie :</strong> plusieurs années d'usage supplémentaires</li>
+                        <li><strong>Réduire les déchets :</strong> chaque machine sauvée compte</li>
+                        <li><strong>Sensibiliser :</strong> comprendre l'impact environnemental du numérique</li>
+                        <li><strong>Redistribution solidaire :</strong> partager les ressources</li>
+                        <li><strong>Dynamique collective :</strong> devenir acteur du changement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <script src="{{ asset('/recondition.js') }}"></script>
+
+
+{% endblock %}
