@@ -2,12 +2,1026 @@
 
 {% block title %}Boîte à Outils - Documentation Technique{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('styles/tools.css') }}">
-{% endblock %}
-
 {% block body %}
+
+    <style>
+        /* ====================================
+       TOOLBOX CSS - Boîte à Outils 3D
+       ==================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .toolbox-page {
+            max-height: 100vh;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ====================================
+           BACKGROUND ANIMATIONS
+           ==================================== */
+        .background {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, #eef2ff, #ffffff, #faf5ff);
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            width: 384px;
+            height: 384px;
+            border-radius: 9999px;
+            mix-blend-mode: multiply;
+            filter: blur(64px);
+            opacity: 0.2;
+            animation: blob 7s infinite;
+        }
+
+        .blob-1 {
+            top: 0;
+            left: 0;
+            background: #d8b4fe;
+        }
+
+        .blob-2 {
+            top: 0;
+            right: 0;
+            background: #fde047;
+            animation-delay: 2s;
+        }
+
+        .blob-3 {
+            bottom: 0;
+            left: 50%;
+            background: #fbcfe8;
+            animation-delay: 4s;
+        }
+
+        @keyframes blob {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        .grid-pattern {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(229, 231, 235, 0.3) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(229, 231, 235, 0.3) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        /* ====================================
+           HEADER
+           ==================================== */
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 1rem 1rem 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-badge {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(to bottom right, #c084fc, #f9a8d4);
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid white;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-text {
+            color: white;
+            font-weight: bold;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #9333ea, #db2777, #4f46e5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .description {
+            font-size: 1.125rem;
+            color: #4b5563;
+            max-width: 42rem;
+            margin: 0 auto;
+            line-height: 1.75;
+        }
+
+        /* ====================================
+           TOOLBOX 3D SCENE
+           ==================================== */
+        .toolbox-scene {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 450px;
+            padding: 2rem;
+            perspective: 1500px;
+        }
+
+        .toolbox-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* ====================================
+           TOOLBOX CLOSED STATE (3D Box)
+           ==================================== */
+        .toolbox-closed {
+            display: block;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .toolbox-closed:hover {
+            transform: scale(1.05);
+        }
+
+        .toolbox-closed.hidden {
+            display: none;
+        }
+
+        .toolbox-box {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transform: rotateX(-15deg) rotateY(20deg);
+            transition: all 0.5s ease;
+        }
+
+        .toolbox-closed:hover .toolbox-box {
+            transform: rotateX(-20deg) rotateY(25deg);
+        }
+
+        .toolbox-face {
+            position: absolute;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: 3px solid #991b1b;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .toolbox-front {
+            width: 400px;
+            height: 200px;
+            transform: translateZ(100px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .toolbox-top {
+            width: 400px;
+            height: 200px;
+            transform: rotateX(90deg) translateZ(100px);
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+
+        .toolbox-right {
+            width: 200px;
+            height: 200px;
+            transform: rotateY(90deg) translateZ(302px);
+        }
+
+        .toolbox-left {
+            width: 200px;
+            height: 200px;
+            transform: rotateY(-90deg) translateZ(100px);
+        }
+
+        .toolbox-bottom {
+            width: 400px;
+            height: 200px;
+            transform: rotateX(-90deg) translateZ(100px);
+        }
+
+        .toolbox-back {
+            width: 400px;
+            height: 200px;
+            transform: translateZ(-100px) rotateY(180deg);
+        }
+
+        .toolbox-handle {
+            width: 120px;
+            height: 30px;
+            background: #78716c;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .toolbox-handle::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #292524;
+            border-radius: 50%;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .toolbox-handle::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #292524;
+            border-radius: 50%;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .toolbox-lock {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 1rem;
+        }
+
+        .toolbox-lock svg {
+            width: 100%;
+            height: 100%;
+            color: #fbbf24;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .toolbox-label {
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ====================================
+           TOOLBOX OPENED STATE
+           ==================================== */
+        .toolbox-opened {
+            display: none;
+            animation: toolboxOpen 0.6s ease-out forwards;
+        }
+
+        .toolbox-opened.active {
+            display: block;
+        }
+
+        @keyframes toolboxOpen {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .toolbox-lid {
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            border: 3px solid #991b1b;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: -5px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .lid-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 25px;
+            background: #78716c;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .toolbox-base {
+            width: 100%;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: 3px solid #991b1b;
+            border-radius: 0 0 12px 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ====================================
+           TOOLS GRID
+           ==================================== */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .tool-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-8px);
+        }
+
+        .tool-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 3px solid white;
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover .tool-icon {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(1.1);
+        }
+
+        .tool-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        .tool-purple {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+        }
+
+        .tool-orange {
+            background: linear-gradient(135deg, #f97316, #fb923c);
+        }
+
+        .tool-green {
+            background: linear-gradient(135deg, #22c55e, #10b981);
+        }
+
+        .tool-blue {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .tool-cyan {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
+
+        .tool-pink {
+            background: linear-gradient(135deg, #ec4899, #f472b6);
+        }
+
+        .tool-name {
+            color: white;
+            font-weight: bold;
+            font-size: 0.875rem;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-toolbox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: white;
+            color: #dc2626;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 1.5rem auto 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-toolbox:hover {
+            background: #dc2626;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .close-toolbox svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ====================================
+           MODAL
+           ==================================== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.2s ease;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.2) rotate(90deg);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #9333ea, #db2777);
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-icon svg {
+            width: 80px;
+            height: 80px;
+            color: white;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+        }
+
+        #modalTitle {
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        #modalDescription {
+            color: #374151;
+            font-size: 1.125rem;
+            line-height: 1.75;
+            margin-bottom: 2rem;
+        }
+
+        .modal-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(to right, #f3f4f6, #e5e7eb);
+            border-radius: 0.75rem;
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .modal-link:hover {
+            background: linear-gradient(to right, #9333ea, #db2777);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: 0 10px 15px -3px rgba(147, 51, 234, 0.3);
+        }
+
+        .modal-link svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* ====================================
+           CTA SECTION
+           ==================================== */
+        .cta-section {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-top: 3rem;
+            padding: 0 1rem 4rem;
+        }
+
+        .cta-text {
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        .cta-button {
+            background: linear-gradient(to right, #9333ea, #db2777);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.125rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            box-shadow: 0 25px 50px -12px rgba(147, 51, 234, 0.5);
+            transform: scale(1.05) translateY(-4px);
+        }
+
+        /* ====================================
+           RESPONSIVE
+           ==================================== */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .toolbox-box {
+                width: 300px;
+                height: 225px;
+                transform: rotateX(-10deg) rotateY(10deg);
+            }
+
+            .toolbox-front {
+                width: 300px;
+                height: 150px;
+                transform: translateZ(75px);
+            }
+
+            .toolbox-top {
+                width: 300px;
+                height: 150px;
+                transform: rotateX(90deg) translateZ(75px);
+            }
+
+            .toolbox-right {
+                width: 150px;
+                height: 150px;
+                transform: rotateY(90deg) translateZ(300px);
+            }
+
+            .toolbox-left {
+                width: 150px;
+                height: 150px;
+            }
+
+            .toolbox-bottom {
+                width: 300px;
+                height: 150px;
+                transform: rotateX(-90deg) translateZ(75px);
+            }
+
+            .toolbox-back {
+                width: 300px;
+                height: 150px;
+                transform: translateZ(-75px) rotateY(180deg);
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            #modalTitle {
+                font-size: 1.5rem;
+            }
+
+            #modalDescription {
+                font-size: 1rem;
+            }
+        }
+
+
+        .back-home-button {
+            /* POSITIONNEMENT */
+            position: absolute;
+            top: 20px; /* Distance du haut du header */
+            left: 20px; /* Distance de la gauche du header */
+
+            /* ALIGNEMENT (Flexbox) */
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Espace entre l'icône et le texte */
+
+            /* TAILLE ET APPARENCE */
+            font-size: 0.9rem; /* Taille de police plus petite */
+            font-weight: 500;
+            width: 200px;
+            height: 30px;
+
+            text-align: center;
+            background-color: #ef4444 ; /* Fond légèrement transparent */
+            color: white;
+            text-decoration: none;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+            z-index: 10; /* Assure que le bouton est au-dessus d'autres éléments */
+        }
+
+        .back-home-button:hover {
+            background-color: #ef4444 ;
+            border-color: black;
+        }
+
+        .back-home-button svg {
+            /* Style pour l'icône SVG (la taille est définie directement dans le Twig: width="24" height="24") */
+            stroke: currentColor;
+        }
+
+    </style>
+    <script>
+
+        console.log('=== Initialisation de toolbox.js ===');
+        // Données des outils
+        const toolsData = {
+            'admin-system': {
+                title: 'Administration Système',
+                icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>`,
+                description: 'Retrouvez tous nos outils et tutoriels pour l\'administration système. Guides de configuration, scripts utiles, bonnes pratiques et astuces pour gérer efficacement vos serveurs et infrastructures.',
+                links: [
+                    { text: 'Tutoriels d\'administration', url: '/documentation/admin-system', icon: 'book' },
+                    { text: 'Scripts et outils', url: '/tools/scripts', icon: 'code' },
+                    { text: 'Guides de configuration', url: '/guides/configuration', icon: 'settings' }
+                ]
+            },
+            'linux-env': {
+                title: 'Environnement Linux',
+                icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+        </svg>`,
+                description: 'Des conseils pratiques et des guides détaillés pour mettre en place votre propre environnement Linux. Configuration, personnalisation et optimisation pour tous les niveaux.',
+                links: [
+                    { text: 'Guide d\'installation', url: '/guides/linux-install', icon: 'download' },
+                    { text: 'Configuration système', url: '/guides/linux-config', icon: 'settings' },
+                    { text: 'Personnalisation', url: '/guides/customization', icon: 'palette' }
+                ]
+            },
+            'software-lists': {
+                title: 'Listes de Logiciels',
+                icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>`,
+                description: 'Des listes complètes et commentées de logiciels pour vous aider à faire les meilleurs choix selon vos besoins. Comparatifs, alternatives et recommandations.',
+                links: [
+                    { text: 'Logiciels bureautiques', url: '/software/office', icon: 'document' },
+                    { text: 'Outils de développement', url: '/software/dev', icon: 'code' },
+                    { text: 'Applications système', url: '/software/system', icon: 'server' }
+                ]
+            },
+            'tutorials': {
+                title: 'Tutoriels',
+                icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+        </svg>`,
+                description: 'Une bibliothèque complète de tutoriels étape par étape pour vous accompagner dans vos projets. Du niveau débutant à expert.',
+                links: [
+                    { text: 'Tutoriels débutant', url: '/tutorials/beginner', icon: 'star' },
+                    { text: 'Niveau intermédiaire', url: '/tutorials/intermediate', icon: 'trending-up' },
+                    { text: 'Niveau avancé', url: '/tutorials/advanced', icon: 'zap' }
+                ]
+            },
+            'tchap-forum': {
+                title: 'Forum Tchap',
+                icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
+        </svg>`,
+                description: 'Rejoignez notre communauté sur Tchap pour échanger avec d\'autres utilisateurs, poser vos questions techniques et partager vos expériences. Un espace dédié aux discussions techniques.',
+                links: [
+                    { text: 'Accéder au forum', url: 'https://tchap.gouv.fr', icon: 'external-link', external: true },
+                    { text: 'Guide d\'utilisation', url: '/guides/tchap', icon: 'help-circle' },
+                    { text: 'Règles de la communauté', url: '/community/rules', icon: 'shield' }
+                ]
+            },
+            'documentation': {
+                title: 'Documentation',
+                icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+        </svg>`,
+                description: 'Accédez à l\'ensemble de nos documentations techniques. Références complètes, guides d\'utilisation et ressources pour approfondir vos connaissances.',
+                links: [
+                    { text: 'Documentation complète', url: '/documentation', icon: 'book-open' },
+                    { text: 'FAQ', url: '/faq', icon: 'help-circle' },
+                    { text: 'Glossaire technique', url: '/glossary', icon: 'list' }
+                ]
+            }
+        };
+
+        // Icônes pour les liens
+        const linkIcons = {
+            'book': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>`,
+            'code': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>`,
+            'settings': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>`,
+            'download': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>`,
+            'palette': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>`,
+            'document': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`,
+            'server': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>`,
+            'star': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>`,
+            'trending-up': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>`,
+            'zap': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>`,
+            'external-link': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>`,
+            'help-circle': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
+            'shield': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>`,
+            'book-open': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>`,
+            'list': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>`
+        };
+
+        //console.log('=== Script toolbox.js chargé ===');
+
+        // Fonction pour ouvrir le modal
+        function openModal(toolId) {
+            //console.log('📦 openModal appelée avec toolId:', toolId);
+
+            const toolData = toolsData[toolId];
+            if (!toolData) {
+                console.error('❌ Outil non trouvé:', toolId);
+                return;
+            }
+
+            //console.log('✅ Données de l\'outil:', toolData.title);
+
+            const modal = document.getElementById('toolModal');
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const linksContainer = document.getElementById('modalLinks');
+
+            if (!modal || !modalIcon || !modalTitle || !modalDescription || !linksContainer) {
+                console.error('❌ Éléments du modal non trouvés');
+                return;
+            }
+
+            // Remplir le contenu du modal
+            modalIcon.innerHTML = toolData.icon;
+            modalTitle.textContent = toolData.title;
+            modalDescription.textContent = toolData.description;
+
+            // Créer les liens
+            linksContainer.innerHTML = '';
+
+            toolData.links.forEach(function(link) {
+                const linkElement = document.createElement('a');
+                linkElement.href = link.url;
+                linkElement.className = 'modal-link';
+                if (link.external) {
+                    linkElement.target = '_blank';
+                    linkElement.rel = 'noopener noreferrer';
+                }
+
+                linkElement.innerHTML = linkIcons[link.icon] + '<span>' + link.text + '</span>';
+                linksContainer.appendChild(linkElement);
+            });
+
+            // Afficher le modal
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            //console.log('✅ Modal affiché');
+        }
+
+        // Fonction pour fermer le modal
+        function closeModal() {
+            //console.log('🔒 Fermeture du modal');
+            const modal = document.getElementById('toolModal');
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Attendre que le DOM soit complètement chargé
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 DOM chargé - Initialisation des événements');
+
+            // Récupérer tous les éléments
+            const toolboxClosed = document.getElementById('toolboxClosed');
+            const toolboxOpened = document.getElementById('toolboxOpened');
+            const closeToolboxBtn = document.getElementById('closeToolbox');
+            const modal = document.getElementById('toolModal');
+            const modalClose = document.getElementById('modalClose');
+
+            /*console.log('🔍 Éléments trouvés:');
+            console.log('- toolboxClosed:', toolboxClosed ? '✅' : '❌');
+            console.log('- toolboxOpened:', toolboxOpened ? '✅' : '❌');
+            console.log('- closeToolboxBtn:', closeToolboxBtn ? '✅' : '❌');
+            console.log('- modal:', modal ? '✅' : '❌');
+            console.log('- modalClose:', modalClose ? '✅' : '❌');*/
+
+            // 1. Ouvrir la boîte à outils
+            if (toolboxClosed) {
+                toolboxClosed.addEventListener('click', function(e) {
+                    console.log('🔓 Clic sur la boîte fermée');
+                    e.preventDefault();
+                    toolboxClosed.classList.add('hidden');
+                    if (toolboxOpened) {
+                        toolboxOpened.classList.add('active');
+                        console.log('✅ Boîte ouverte');
+                    }
+                });
+                console.log('✅ Event listener ajouté sur toolboxClosed');
+            } else {
+                console.error('❌ toolboxClosed non trouvé dans le DOM');
+            }
+
+            // 2. Fermer la boîte à outils
+            if (closeToolboxBtn) {
+                closeToolboxBtn.addEventListener('click', function(e) {
+                    console.log('🔒 Clic sur fermer la boîte');
+                    e.preventDefault();
+                    if (toolboxOpened) {
+                        toolboxOpened.classList.remove('active');
+                    }
+                    if (toolboxClosed) {
+                        toolboxClosed.classList.remove('hidden');
+                    }
+                    // console.log('✅ Boîte fermée');
+                });
+                console.log('✅ Event listener ajouté sur closeToolboxBtn');
+            }
+
+            // 3. Ouvrir le modal pour chaque outil
+            const toolItems = document.querySelectorAll('.tool-item');
+            console.log('🔧 Nombre d\'outils trouvés:', toolItems.length);
+
+            toolItems.forEach(function(item, index) {
+                const toolId = item.getAttribute('data-tool');
+                //console.log(`- Outil ${index + 1}: ${toolId}`);
+
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('🖱️ Clic sur outil:', toolId);
+                    openModal(toolId);
+                });
+            });
+
+            if (toolItems.length > 0) {
+                //console.log('✅ Event listeners ajoutés sur les outils');
+            } else {
+                console.error('❌ Aucun outil trouvé (.tool-item)');
+            }
+
+            // 4. Fermer le modal avec la croix
+            if (modalClose) {
+                modalClose.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    closeModal();
+                });
+                console.log('✅ Event listener ajouté sur modalClose');
+            }
+
+            // 5. Fermer en cliquant en dehors du modal
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+                console.log('✅ Event listener ajouté sur modal backdrop');
+            }
+
+            // 6. Fermer avec la touche Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal && modal.classList.contains('show')) {
+                    closeModal();
+                }
+            });
+            //console.log('✅ Event listener ajouté pour touche Escape');
+
+            //console.log('🎉 Initialisation terminée');
+        });
+    </script>
 <div class="toolbox-page">
     <!-- Background -->
     {% include 'partials/background.html.twig' %}
