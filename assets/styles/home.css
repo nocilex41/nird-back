@@ -148,7 +148,8 @@ body {
 /* Bubbles */
 .bubbles-container {
     position: relative;
-    height: 600px;
+    /*height: 600px;*/
+    height: 80vh;
     margin-top: 3rem;
 }
 
@@ -405,4 +406,9 @@ body {
     height: 100vh;               /* prend toute la hauteur */
     text-align: center;
     padding-top: 100px;          /* ajuste la distance depuis le haut */
+}
+
+
+.bubble-inner, .bubble-orange{
+    text-decoration: none;
 }
