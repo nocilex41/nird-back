@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('styles/tools.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/styles/tools.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -14,7 +14,7 @@
 
     <!-- Header -->
     <header class="header">
-        
+
         <a href="{{ path('app_home') }}" class="back-home-button">
             Revenir à l'accueil
         </a>
@@ -23,10 +23,10 @@
             Cliquez sur la boîte pour découvrir tous nos outils, tutoriels et documentations
         </p>
 
-        
+
     </header>
-    
-    
+
+
     <!-- Toolbox Container -->
     <div class="toolbox-scene">
         <div class="toolbox-container" id="toolboxContainer">
@@ -122,7 +122,7 @@
                 </button>
             </div>
         </div>
-        
+
     </div>
 
     <!-- Modal for Tool Details -->
@@ -135,4 +135,4 @@
 {% endblock %}
 
 
-   
+
